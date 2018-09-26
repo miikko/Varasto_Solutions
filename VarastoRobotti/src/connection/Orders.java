@@ -1,3 +1,4 @@
+package connection;
 import java.util.ArrayList;
 
 import lejos.robotics.navigation.Waypoint;
@@ -10,8 +11,13 @@ public class Orders {
 	}
 	
 	public Waypoint getNextOrder() {
-		Waypoint temp = orders.get(orders.size());
-		orders.remove(orders.size());
-		return temp;
+		if(!orders.isEmpty()) {
+			Waypoint temp = orders.get(0);
+			orders.remove(0);
+			return temp;
+		}
+
+		return null;
+		
 	}
 }
