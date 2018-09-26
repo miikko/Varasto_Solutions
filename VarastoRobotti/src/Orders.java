@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import lejos.robotics.navigation.Waypoint;
 
 public class Orders {
-	ArrayList<Waypoint> orders;
+	private ArrayList<Waypoint> orders;
 	
 	public void addOrder(Waypoint order) {
 		orders.add(order);
