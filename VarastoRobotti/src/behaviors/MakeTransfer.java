@@ -9,7 +9,7 @@ public class MakeTransfer implements Behavior {
 	private volatile boolean suppressed = false;
 	private Navigation navigation;
 	private Orders orders; 
-	private Waypoint defaultWP = new Waypoint(0,0);
+	private Waypoint defaultWP = new Waypoint(40,0);
 	
 	public MakeTransfer(Navigation navigation, Orders orders) {
 		this.navigation = navigation;
@@ -20,16 +20,20 @@ public class MakeTransfer implements Behavior {
 	@Override
 	public boolean takeControl() {
 		// TODO Auto-generated method stub
-		return orders.getNextOrder() != null;
+		return (!orders.checkIfEmpty());
 	}
 
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
 		suppressed = false;
-		navigation.executePath(orders.getNextOrder(), false);
-		// TODO pickup rutiini tähän väliin
-		navigation.executePath(defaultWP, true);
+		while(!orders.checkIfEmpty()) {
+			navigation.executePath(orders.getNextOrder(), true);
+			// TODO pickup rutiini tähän väliin
+			navigation.executePath(defaultWP, false);
+		}
+		Thread.yield();
+			
 
 	}
 

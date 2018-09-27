@@ -11,12 +11,12 @@ import lejos.robotics.pathfinding.*;
 public class Navigation {
 
 	//TODO assign correct MotorPorts
-	private EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
-	private EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
+	private EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.C);
+	private EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 	
 	//TODO Diameters, Offsets
-	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 3.10).offset(-8.40);	
-	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 3.10).offset(8.40);
+	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 3.10).offset(-5.5);	
+	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 3.10).offset(5.5);
 	
 	//TODO check correct wheels
 	private Chassis chassis = new WheeledChassis(new Wheel[] {leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -27,6 +27,7 @@ public class Navigation {
 	
 	public Navigation(Pose startPose) {
 		poseProvider.setPose(startPose);
+
 	}
 	
 	public void executePath(Waypoint targetWaypoint, boolean store) {
@@ -50,13 +51,17 @@ public class Navigation {
 		Path path = new Path();
 		
 		if(store) {
-			wp = new Waypoint(pose.getY(), (float)targetWaypoint.getX());
+			wp = new Waypoint(pose.getX(), targetWaypoint.getY());
 		} else {
-			wp = new Waypoint(pose.getX(), (float)targetWaypoint.getY());
+			wp = new Waypoint(targetWaypoint.getX(), pose.getY());
 		}
 		
 		path.add(wp);
 		path.add(targetWaypoint);
 		return path;
+	}
+	
+	public void rotate90() {
+		pilot.rotate(90);
 	}
 }

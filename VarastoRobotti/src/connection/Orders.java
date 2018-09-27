@@ -6,6 +6,10 @@ import lejos.robotics.navigation.Waypoint;
 public class Orders {
 	private ArrayList<Waypoint> orders;
 	
+	public Orders() {
+		orders = new ArrayList<>();
+	}
+	
 	public void addOrder(Waypoint order) {
 		orders.add(order);
 	}
@@ -19,5 +23,9 @@ public class Orders {
 
 		return null;
 		
+	}
+	
+	public boolean checkIfEmpty() {
+		return orders.isEmpty();
 	}
 }
