@@ -33,11 +33,25 @@ public class MenuController {
 				
 				if (inventory[i][j] != null && !items.contains(inventory[i][j].getName())) {
 					items.add(inventory[i][j].getName());
-					System.out.println(inventory[i][j].getName() + " added");
 				}
 			}
 		}
 		catalog = FXCollections.observableArrayList(items);
 		return catalog;
+	}
+	
+	public void updateQuantity(String itemName) {
+		InventoryItem[][] inventory = invDB.getInventory();
+		int quantity = 0;
+		
+		for (int i = 0; i < inventory.length; i++) {
+			for (int j = 0; j < inventory[i].length; j++) {
+				
+				if (inventory[i][j] != null && inventory[i][j].getName().contains(itemName)) {
+					quantity++;
+				}
+			}
+		}
+		view.displayItemQuantity(quantity);
 	}
 }

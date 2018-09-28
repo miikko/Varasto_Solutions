@@ -27,6 +27,7 @@ public class InventoryDatabase {
 				System.out.println("LineCounter: " + lineCounter + ", length: " + thisLineSplit.length);
 				for (int i = 1; i < thisLineSplit.length; i++) {
 					inventory[lineCounter][i] = new InventoryItem(thisLineSplit[i], lineCounter);
+					System.out.println(thisLineSplit[i]);
 				}
 
 				thisLine = buffReader.readLine();

@@ -2,9 +2,9 @@ package interfaces;
 
 public interface MenuView_IF {
 
-	public void updateFeed();
+	public void updateFeed(String message);
 	
-	public void displayItemQuantity();
+	public void displayItemQuantity(int quantity);
 	
-	public void updateDeliveryStatus();
+	public void updateDeliveryStatus(String message);
 }
