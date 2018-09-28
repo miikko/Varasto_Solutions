@@ -22,18 +22,22 @@ public class MenuController {
 		
 	}
 	
-	public void initializeCatalog(ObservableList<String> catalog) {
+	public ObservableList<String> initializeCatalog() {
+		ObservableList<String> catalog;
 		InventoryItem[][] inventory = invDB.getInventory();
 		List<String> items = new ArrayList<String>();
 		
 		for (int i = 0; i < inventory.length; i++) {
 			
 			for (int j = 0; j < inventory[i].length; j++) {
-				if (!items.contains(inventory[i][j].getName())) {
+				
+				if (inventory[i][j] != null && !items.contains(inventory[i][j].getName())) {
 					items.add(inventory[i][j].getName());
+					System.out.println(inventory[i][j].getName() + " added");
 				}
 			}
 		}
 		catalog = FXCollections.observableArrayList(items);
+		return catalog;
 	}
 }

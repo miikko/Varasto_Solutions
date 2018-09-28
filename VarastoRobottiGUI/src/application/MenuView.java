@@ -31,7 +31,7 @@ public class MenuView extends Application implements MenuView_IF {
 	
 	public void init() {
 		controller = new MenuController(this);
-		//controller.initializeCatalog(catalogObsList);
+		catalogObsList = controller.initializeCatalog();
 		
 	}
 	
@@ -56,7 +56,8 @@ public class MenuView extends Application implements MenuView_IF {
 			root.setAlignment(Pos.CENTER);
 			root.setVgap(10);
 			root.setHgap(10);
-			root.add(confirmBtn, 0, 1);
+			root.add(confirmBtn, 0, 0);
+			root.add(catalogListView, 1, 0);
 			Scene scene = new Scene(root,600,400);
 			primaryStage.setScene(scene);
 			primaryStage.show();

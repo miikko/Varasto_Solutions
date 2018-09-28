@@ -13,6 +13,7 @@ public class InventoryDatabase {
 	private InventoryItem[][] inventory;
 
 	public InventoryDatabase() {
+		inventory = new InventoryItem[6][4];
 		// Read inventory from file
 		try (FileReader fileReader = new FileReader(PATH); BufferedReader buffReader = new BufferedReader(fileReader)) {
 
@@ -20,9 +21,10 @@ public class InventoryDatabase {
 			int lineCounter = 0;
 
 			// assuming that shelf count is 6
-			while (lineCounter < 6) {
+			while (lineCounter < 2) {
 
 				String[] thisLineSplit = thisLine.split("\t");
+				System.out.println("LineCounter: " + lineCounter + ", length: " + thisLineSplit.length);
 				for (int i = 1; i < thisLineSplit.length; i++) {
 					inventory[lineCounter][i] = new InventoryItem(thisLineSplit[i], lineCounter);
 				}
