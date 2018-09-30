@@ -25,7 +25,7 @@ import javafx.scene.layout.VBox;
 public class MenuView extends Application implements MenuView_IF {
 
 	private Label updateFeedLbl;
-	private Label deliveryStatusLbl;
+	public Label deliveryStatusLbl;
 	private Button confirmBtn;
 	private ListView<String> catalogListView;
 	private ListView<Integer> quantityListView;
@@ -65,7 +65,7 @@ public class MenuView extends Application implements MenuView_IF {
 					if (catalogListView.getSelectionModel().getSelectedIndex() >= 0
 							&& quantityListView.getSelectionModel().getSelectedIndex() >= 0) {
 						
-						controller.startDelivery();
+						controller.startDelivery(catalogListView.getSelectionModel().getSelectedItem());
 					}
 				}
 

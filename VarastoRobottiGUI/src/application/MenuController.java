@@ -5,21 +5,37 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.text.Text;
+import lejos.robotics.navigation.Waypoint;
 
 public class MenuController {
 	
 	private InventoryDatabase invDB;
 	private MenuView view;
 	private MenuCommunicationModel commModel;
+	private final Waypoint[] SHELFCOORDINATES = new Waypoint[] {};
 	
 	public MenuController(MenuView view) {
 		this.view = view;
 		invDB = new InventoryDatabase();
 		commModel = new MenuCommunicationModel();
+		commModel.start();
+		commModel.setDaemon(true);
 	}
 	
-	public void startDelivery() {
+	public void startDelivery(String itemName) {
+		InventoryItem[][] inventory = invDB.getInventory();
 		
+		for (int i = 0; i < inventory.length; i++) {
+			
+			for (int j = 0; j < inventory[i].length; j++) {
+				
+				if (inventory[i][j] != null && inventory[i][j].getName().equals(itemName)) {
+					commModel.makeTransfer(SHELFCOORDINATES[i], j);
+				}
+			}
+		}
+		view.deliveryStatusLbl.textProperty().bind(commModel.statusMessageProperty());
 	}
 	
 	public ObservableList<String> initializeCatalog() {
