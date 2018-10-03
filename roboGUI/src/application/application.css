@@ -1,0 +1,17 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.leftBox {
+	-fx-min-height: 400;
+	-fx-max-width: 90;
+	-fx-min-width: 90;
+	-fx-padding: 10;
+	-fx-alignment: top-center;
+	-fx-background-color : linear-gradient(#e66465, #9198e5);
+}
+
+.centerBoxH1  {
+	-fx-padding: 10;
+}
+
+.centerBoxH1 * {
+	-fx-padding: 10;
+}
