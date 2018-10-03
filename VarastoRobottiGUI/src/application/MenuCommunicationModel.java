@@ -14,7 +14,7 @@ import lejos.robotics.navigation.Waypoint;
 public class MenuCommunicationModel extends Thread {
 
 	private Robot[] robots;
-	private boolean quit;
+	private boolean quit = false;
 	private final String HOST = "10.0.1.1";
 	private final int PORT = 1111;
 	private boolean transferInProgress = false;
@@ -23,7 +23,7 @@ public class MenuCommunicationModel extends Thread {
 
 	public MenuCommunicationModel() {
 
-		
+		/*
 		try {
 			s = new Socket(HOST, PORT);
 		} catch (UnknownHostException e) {
@@ -32,7 +32,11 @@ public class MenuCommunicationModel extends Thread {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+	}
+	
+	public void connect() throws UnknownHostException, IOException{
+			s = new Socket(HOST, PORT);	
 	}
 	
 	public StringProperty statusMessageProperty() {
@@ -68,6 +72,8 @@ public class MenuCommunicationModel extends Thread {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			
 		}
 
 	}

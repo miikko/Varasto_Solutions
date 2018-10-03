@@ -10,16 +10,23 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.MenuView_IF;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class MenuView extends Application implements MenuView_IF {
@@ -32,6 +39,14 @@ public class MenuView extends Application implements MenuView_IF {
 	private ObservableList<String> catalogObsList;
 	private ObservableList<Integer> quantityObsList;
 	private MenuController controller;
+	private BorderPane borderPane;
+	
+	private VBox leftBox;
+	private VBox leftBoxConnected;
+	private Button leftBoxButton;
+	
+	private GridPane centerGrid;
+	
 
 	public void init() {
 		controller = new MenuController(this);
@@ -42,52 +57,12 @@ public class MenuView extends Application implements MenuView_IF {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			primaryStage.setTitle("K‰ytt‰j‰n GUI");
-
-			catalogListView = new ListView<String>(catalogObsList);
-			catalogListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-
-				@Override
-				public void changed(ObservableValue<? extends String> arg0, String oldValue, String newValue) {
-					controller.updateQuantity(newValue);
-				}
-
-			});
-
-			quantityListView = new ListView<Integer>();
-
-			deliveryStatusLbl = new Label("No deliveries in progress.");
-			confirmBtn = new Button("Confirm");
-			confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent e) {
-					if (catalogListView.getSelectionModel().getSelectedIndex() >= 0
-							&& quantityListView.getSelectionModel().getSelectedIndex() >= 0) {
-						
-						controller.startDelivery(catalogListView.getSelectionModel().getSelectedItem());
-					}
-				}
-
-			});
-			confirmBtn.setMinWidth(200);
-			VBox vBox = new VBox(20);
-			vBox.getChildren().add(deliveryStatusLbl);
-			vBox.getChildren().add(confirmBtn);
-			vBox.setMinWidth(200);
-			VBox.setMargin(confirmBtn, new Insets(300,0,0,0));
-			
-			updateFeedLbl = new Label("Inventory updates will be displayed here.");
-
-			GridPane root = new GridPane();
-			root.setAlignment(Pos.CENTER);
-			root.setVgap(20);
-			root.setHgap(20);
-			root.add(catalogListView, 0, 0);// sarake, rivi
-			root.add(quantityListView, 1, 0);
-			root.add(vBox, 2, 0);
-			root.add(updateFeedLbl, 3, 0);
-			Scene scene = new Scene(root, 1200, 600);
+			primaryStage.setTitle("K√§ytt√§j√§n GUI");
+			borderPane = new BorderPane();
+			createLeftBox();
+			borderPane.setLeft(leftBox);
+			createMainGrid();			
+			Scene scene = new Scene(borderPane, 1200, 600);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -117,5 +92,121 @@ public class MenuView extends Application implements MenuView_IF {
 	@Override
 	public void updateDeliveryStatus(String message) {
 		deliveryStatusLbl.setText(message);
+	}
+	
+	//Method for exception popup window
+	@Override
+	public void popExceptionAlert(String headerText, String contentText, Exception e) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Exception Dialog");
+		alert.setHeaderText(headerText);
+		alert.setContentText(contentText);
+
+		// Create expandable Exception.
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		e.printStackTrace(pw);
+		String exceptionText = sw.toString();
+
+		Label label = new Label("The exception stacktrace was:");
+
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
+
+		// Set expandable Exception into the dialog pane.
+		alert.getDialogPane().setExpandableContent(expContent);
+
+		alert.showAndWait();
+	}
+
+	@Override
+	public void setConnected() {
+		// TODO Auto-generated method stub
+		borderPane.setCenter(centerGrid);
+		createLeftBoxConnected();
+		borderPane.setLeft(leftBoxConnected);
+	}
+	
+	//LeftBox of BorderPane when not Conneted
+	private void createLeftBox() {
+		leftBox = new VBox();
+		leftBox.getStyleClass().add("leftBox");
+		leftBoxButton = new Button("Connect");
+		leftBoxButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				// TODO Auto-generated method stub
+				controller.connectRobot();
+			}
+			
+		});
+		leftBox.getChildren().addAll(leftBoxButton);
+	}
+	
+	//LeftBox of BorderPane when Connected
+	private void createLeftBoxConnected() {
+		leftBoxConnected = new VBox();
+		leftBoxConnected.getStyleClass().add("leftBox");
+		Label label = new Label("Connected");
+		leftBoxConnected.getChildren().add(label);
+	}
+	
+	//MainGrid of view, Center of BorderPane 
+	private void createMainGrid() {
+		catalogListView = new ListView<String>(catalogObsList);
+		catalogListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String oldValue, String newValue) {
+				controller.updateQuantity(newValue);
+			}
+
+		});
+
+		quantityListView = new ListView<Integer>();
+
+		deliveryStatusLbl = new Label("No deliveries in progress.");
+		confirmBtn = new Button("Confirm");
+		confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				if (catalogListView.getSelectionModel().getSelectedIndex() >= 0
+						&& quantityListView.getSelectionModel().getSelectedIndex() >= 0) {
+					
+					controller.startDelivery(catalogListView.getSelectionModel().getSelectedItem());
+				}
+			}
+
+		});
+		confirmBtn.setMinWidth(200);
+		VBox vBox = new VBox(20);
+		vBox.getChildren().add(deliveryStatusLbl);
+		vBox.getChildren().add(confirmBtn);
+		vBox.setMinWidth(200);
+		VBox.setMargin(confirmBtn, new Insets(300,0,0,0));
+		
+		updateFeedLbl = new Label("Inventory updates will be displayed here.");
+
+		centerGrid = new GridPane();
+		centerGrid.setAlignment(Pos.CENTER);
+		centerGrid.setVgap(20);
+		centerGrid.setHgap(20);
+		centerGrid.add(catalogListView, 0, 0);// sarake, rivi
+		centerGrid.add(quantityListView, 1, 0);
+		centerGrid.add(vBox, 2, 0);
+		centerGrid.add(updateFeedLbl, 3, 0);
 	}
 }

@@ -1,5 +1,7 @@
 package application;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +21,8 @@ public class MenuController {
 		this.view = view;
 		invDB = new InventoryDatabase();
 		commModel = new MenuCommunicationModel();
-		commModel.start();
-		commModel.setDaemon(true);
+		//commModel.start();
+		//commModel.setDaemon(true);
 	}
 	
 	public void startDelivery(String itemName) {
@@ -69,5 +71,14 @@ public class MenuController {
 			}
 		}
 		view.displayItemQuantity(quantity);
+	}
+	
+	public void connectRobot() {
+		try {
+			//commModel.connect();
+			view.setConnected();
+		} catch (Exception e) {
+			view.popExceptionAlert("Connection Failed", "Make sure the robot is running", e);
+		}
 	}
 }
