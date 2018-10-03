@@ -2,6 +2,7 @@ package behaviors;
 
 import java.util.Set;
 
+import actions.Lift;
 import connection.Connection;
 import connection.Orders;
 import lejos.robotics.navigation.Waypoint;
@@ -11,10 +12,11 @@ import navigation.Navigation;
 public class MakeTransfer implements Behavior {
 	private volatile boolean suppressed = false;
 	private Navigation navigation;
+	private Lift lift = new Lift();
 	private final Waypoint customerWP = new Waypoint(80,0);
 	private final Waypoint defaultWP = new Waypoint(40,0);
 	
-	public MakeTransfer(Navigation navigation, Orders orders) {
+	public MakeTransfer(Navigation navigation) {
 		this.navigation = navigation;
 	}
 	
@@ -31,12 +33,44 @@ public class MakeTransfer implements Behavior {
 	public void action() {
 		// TODO Auto-generated method stub
 		suppressed = false;
-		while(Connection.noOrders()) {
-			navigation.executePath(Connection.getNextOrder());
-			
+		while(!Connection.noOrders()) {
+			Waypoint temp = Connection.getNextOrder();
+			navigation.executePath(temp);
 			// TODO pickup rutiini tähän väliin
+			// faceShelf
+			boolean leftShelf;
+			if(temp.x < 100) {
+				leftShelf = true;
+			}else {
+				leftShelf = false;
+			}
+			navigation.faceShelf(leftShelf);
 			
+			// lift to temp height
+			lift.liftUp(Connection.orders.get(temp).get(Connection.orders.get(temp).size() - 1), false);
+			
+			
+			// move forward
+			navigation.driveStraight(true);
+			
+			// lift order up
+			lift.liftUp(0, true);
+			
+			// back out of shelf
+			navigation.driveStraight(false);
+			
+			// remove current order from orders
+			if(!Connection.orders.get(temp).isEmpty()) {
+				Connection.orders.get(temp).remove(Connection.orders.get(temp).size() - 1);
+			}else {
+				Connection.orders.remove(temp);
+			}
+			
+			// take order to removal point
 			navigation.executePath(defaultWP);
+			
+			// reset lift-height
+			lift.liftDown();
 		}
 		Thread.yield();
 			

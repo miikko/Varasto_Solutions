@@ -17,8 +17,7 @@ public class Connection extends Thread{
 	private ServerSocket serv;
 	private Socket socket;
 	private Navigation navigation;
-	//private Orders orders; 
-	public static Map<Waypoint, ArrayList<Integer>> orders = new HashMap<>(); 
+	public static Map<Waypoint, ArrayList<Integer>> orders = new HashMap<Waypoint, ArrayList<Integer>>(); 
 	private boolean terminate = false;
 	
 	public Connection(Navigation navigation) {
@@ -26,12 +25,15 @@ public class Connection extends Thread{
 	}
 	
 	public void run() {
+//		Waypoint wp = new Waypoint(30, 10);
+//		makeNewOrder(wp, 2);
+//		while(!terminate) {
+//			
+//		}
 		try {
 			serv = new ServerSocket(1111);
 			while(!terminate) {
 				socket = serv.accept();
-//				Handler handler = new Handler(this, socket);
-//				handler.start();
 				DataInputStream in = new DataInputStream(socket.getInputStream());
 				Waypoint waypoint = new Waypoint(0,0);
 				waypoint.loadObject(in);
@@ -70,7 +72,6 @@ public class Connection extends Thread{
 	}
 	
 	public void makeNewOrder(Waypoint waypoint, int shelfNumber) {
-		//orders.addOrder(waypoint);
 		if (orders.get(waypoint) == null) {
 			orders.put(waypoint, new ArrayList<Integer>());
 		}

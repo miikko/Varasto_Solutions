@@ -1,6 +1,11 @@
+import actions.Lift;
+import behaviors.MakeTransfer;
+import connection.Connection;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.robotics.navigation.Pose;
+import lejos.robotics.subsumption.Arbitrator;
+import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import navigation.Navigation;
 
@@ -10,10 +15,12 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		Navigation navi = new Navigation(new Pose(0,0,0));
-		navi.rotate90();
-//		navi.driveStraight();
-		navi.faceShelf(true);
-		navi.faceShelf(false);
+		Connection connection = new Connection(navi);
+		connection.start();
+		Behavior makeTransfer = new MakeTransfer(navi);
+		Behavior[] bArray = { makeTransfer };
+		Arbitrator arby = new Arbitrator(bArray);
+		arby.go();
 
 	}
 

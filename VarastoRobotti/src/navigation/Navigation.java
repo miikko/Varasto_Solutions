@@ -19,8 +19,8 @@ public class Navigation {
 	
 	
 	//TODO Diameters, Offsets
-	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.72).offset(6.25);	
-	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.72).offset(-6.25);
+	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.72).offset(6.25).invert(true);	
+	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.72).offset(-6.25).invert(true);
 	
 	//TODO check correct wheels
 	private Chassis chassis = new WheeledChassis(new Wheel[] {leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -54,11 +54,6 @@ public class Navigation {
 		Waypoint wp = null;
 		Path path = new Path();
 		
-//		if(store) {
-//			wp = new Waypoint(pose.getX(), targetWaypoint.getY());
-//		} else {
-//			wp = new Waypoint(targetWaypoint.getX(), pose.getY());
-//		}
 		wp = new Waypoint(pose.getX(), pose.getY()); 
 		
 		path.add(wp);
@@ -70,9 +65,13 @@ public class Navigation {
 		pilot.rotate(45);
 	}
 	
-	public void driveStraight() {
-		pilot.forward();
-		Delay.msDelay(2000);
+	public void driveStraight(boolean forward) {
+		if(forward) {
+			pilot.forward();
+		}else {
+			pilot.backward();
+		}
+		Delay.msDelay(1000);
 		pilot.stop();
 	}
 	
