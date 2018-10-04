@@ -18,13 +18,12 @@ public class MenuCommunicationModel extends Thread {
 	private boolean quit = false;
 	private final String HOST = "10.0.1.1";
 	private final int PORT = 1111;
-	private boolean transferInProgress = false;
+	public static boolean transferInProgress = false;
 	private Socket s;
 	private final StringProperty transferStatusMessage = new SimpleStringProperty("No transfers in progress.");
 	DataOutputStream out;
 
 	public MenuCommunicationModel() {
-
 		
 		try {
 			connect();
@@ -64,6 +63,7 @@ public class MenuCommunicationModel extends Thread {
 				if (transferInProgress) {
 					
 					String statusMessage = in.readUTF();
+					
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {

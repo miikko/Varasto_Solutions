@@ -75,9 +75,9 @@ public class MakeTransfer implements Behavior {
 			
 			// reset lift-height
 			lift.liftDown();
-			connection.sendUpdate("Finished");
 		}
 		navigation.executePath(defaultWP);
+		connection.sendUpdate("Finished");
 		Thread.yield();
 			
 
