@@ -1,3 +1,0 @@
-0. Shelf	Green	Blue	Green
-1. Shelf	Red	Black	White
-2. Shelf

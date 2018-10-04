@@ -209,4 +209,9 @@ public class MenuView extends Application implements MenuView_IF {
 		centerGrid.add(vBox, 2, 0);
 		centerGrid.add(updateFeedLbl, 3, 0);
 	}
+	
+	@Override
+	public void stop() {
+		controller.terminateSessionFactory();
+	}
 }

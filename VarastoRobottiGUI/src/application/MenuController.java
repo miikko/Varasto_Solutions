@@ -12,46 +12,41 @@ import lejos.robotics.navigation.Waypoint;
 
 public class MenuController {
 	
-	private InventoryDatabase invDB;
+	private InventoryItemDAO dao;
 	private MenuView view;
 	private MenuCommunicationModel commModel;
 	private final Waypoint[] SHELFCOORDINATES = new Waypoint[] {};
 	
 	public MenuController(MenuView view) {
 		this.view = view;
-		invDB = new InventoryDatabase();
+		dao = new InventoryItemDAO();
 		commModel = new MenuCommunicationModel();
 		//commModel.start();
 		//commModel.setDaemon(true);
 	}
 	
 	public void startDelivery(String itemName) {
-		InventoryItem[][] inventory = invDB.getInventory();
+		InventoryItem[] inventory = dao.readInventory();
 		
 		for (int i = 0; i < inventory.length; i++) {
 			
-			for (int j = 0; j < inventory[i].length; j++) {
-				
-				if (inventory[i][j] != null && inventory[i][j].getName().equals(itemName)) {
-					commModel.makeTransfer(SHELFCOORDINATES[i], j);
-				}
+			if (inventory[i] != null && inventory[i].getName().equals(itemName)) {
+				commModel.makeTransfer(SHELFCOORDINATES[inventory[i].getContainerNum()], inventory[i].getShelfNum());
 			}
+			
 		}
 		view.deliveryStatusLbl.textProperty().bind(commModel.statusMessageProperty());
 	}
 	
 	public ObservableList<String> initializeCatalog() {
 		ObservableList<String> catalog;
-		InventoryItem[][] inventory = invDB.getInventory();
+		InventoryItem[] inventory = dao.readInventory();
 		List<String> items = new ArrayList<String>();
 		
 		for (int i = 0; i < inventory.length; i++) {
 			
-			for (int j = 0; j < inventory[i].length; j++) {
-				
-				if (inventory[i][j] != null && !items.contains(inventory[i][j].getName())) {
-					items.add(inventory[i][j].getName());
-				}
+			if (inventory[i] != null && !items.contains(inventory[i].getName())) {
+				items.add(inventory[i].getName());
 			}
 		}
 		catalog = FXCollections.observableArrayList(items);
@@ -59,15 +54,13 @@ public class MenuController {
 	}
 	
 	public void updateQuantity(String itemName) {
-		InventoryItem[][] inventory = invDB.getInventory();
+		InventoryItem[] inventory = dao.readInventory();
 		int quantity = 0;
 		
 		for (int i = 0; i < inventory.length; i++) {
-			for (int j = 0; j < inventory[i].length; j++) {
-				
-				if (inventory[i][j] != null && inventory[i][j].getName().contains(itemName)) {
-					quantity++;
-				}
+			
+			if (inventory[i] != null && inventory[i].getName().contains(itemName)) {
+				quantity++;
 			}
 		}
 		view.displayItemQuantity(quantity);
@@ -80,5 +73,9 @@ public class MenuController {
 		} catch (Exception e) {
 			view.popExceptionAlert("Connection Failed", "Make sure the robot is running", e);
 		}
+	}
+	
+	public void terminateSessionFactory() {
+		dao.terminateSessionFactory();
 	}
 }

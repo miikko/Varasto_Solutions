@@ -25,7 +25,7 @@ public class MenuCommunicationModel extends Thread {
 
 		/*
 		try {
-			s = new Socket(HOST, PORT);
+			connect();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,10 +75,6 @@ public class MenuCommunicationModel extends Thread {
 		} catch (Exception e) {
 			
 		}
-
-	}
-
-	private void connect(Robot robot) {
 
 	}
 
