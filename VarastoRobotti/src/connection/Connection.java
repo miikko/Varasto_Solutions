@@ -22,6 +22,9 @@ public class Connection extends Thread{
 	
 	public Connection(Navigation navigation) {
 		this.navigation = navigation;
+		//Waypoint waypoint = new Waypoint(10,10);
+		//orders.put(waypoint, new ArrayList<Integer>());
+		//orders.get(waypoint).add(2);
 	}
 	
 	public void run() {
@@ -30,17 +33,22 @@ public class Connection extends Thread{
 //		while(!terminate) {
 //			
 //		}
+		
 		try {
 			serv = new ServerSocket(1111);
+			socket = serv.accept();
+			DataInputStream in = new DataInputStream(socket.getInputStream());
 			while(!terminate) {
-				socket = serv.accept();
-				DataInputStream in = new DataInputStream(socket.getInputStream());
 				Waypoint waypoint = new Waypoint(0,0);
+				System.out.println("flag");
 				waypoint.loadObject(in);
 				int shelfNumber;
 				shelfNumber = in.readInt();
+				makeNewOrder(waypoint, shelfNumber);
+				System.out.println("another flag");
+				
 			}
-			
+			in.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

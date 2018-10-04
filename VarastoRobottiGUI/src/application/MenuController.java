@@ -15,14 +15,14 @@ public class MenuController {
 	private InventoryItemDAO dao;
 	private MenuView view;
 	private MenuCommunicationModel commModel;
-	private final Waypoint[] SHELFCOORDINATES = new Waypoint[] {};
+	private final Waypoint[] SHELFCOORDINATES = new Waypoint[] {new Waypoint(36,44)};
 	
 	public MenuController(MenuView view) {
 		this.view = view;
 		dao = new InventoryItemDAO();
 		commModel = new MenuCommunicationModel();
-		//commModel.start();
-		//commModel.setDaemon(true);
+		commModel.setDaemon(true);
+		commModel.start();
 	}
 	
 	public void startDelivery(String itemName) {
@@ -68,10 +68,10 @@ public class MenuController {
 	
 	public void connectRobot() {
 		try {
-			//commModel.connect();
+			commModel.connect();
 			view.setConnected();
 		} catch (Exception e) {
-			view.popExceptionAlert("Connection Failed", "Make sure the robot is running", e);
+			view.popExceptionAlert("Connection Failed", "Make sure that the robot is running", e);
 		}
 	}
 	

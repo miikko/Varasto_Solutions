@@ -71,7 +71,7 @@ public class Navigation {
 		}else {
 			pilot.backward();
 		}
-		Delay.msDelay(1000);
+		Delay.msDelay(500);
 		pilot.stop();
 	}
 	

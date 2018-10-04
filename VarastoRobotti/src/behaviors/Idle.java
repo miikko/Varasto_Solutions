@@ -18,9 +18,6 @@ public class Idle implements Behavior {
 	@Override
 	public boolean takeControl() {
 		
-		if (Connection.orders == null) {
-			return true;
-		}
 		Set<Waypoint> keys = Connection.orders.keySet();
 		
 		for (Waypoint key : keys) {
@@ -35,7 +32,9 @@ public class Idle implements Behavior {
 	public void action() {
 		// TODO Auto-generated method stub
 		suppressed = false;
-		Thread.yield();
+		while (!suppressed) {
+			Thread.yield();
+		}
 	}
 
 	@Override

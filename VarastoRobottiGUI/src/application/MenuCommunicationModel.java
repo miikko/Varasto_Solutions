@@ -20,19 +20,22 @@ public class MenuCommunicationModel extends Thread {
 	private boolean transferInProgress = false;
 	private Socket s;
 	private final StringProperty transferStatusMessage = new SimpleStringProperty("No transfers in progress.");
+	DataOutputStream out;
 
 	public MenuCommunicationModel() {
 
-		/*
+		
 		try {
 			connect();
+			out = new DataOutputStream(s.getOutputStream());
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
+		
 	}
 	
 	public void connect() throws UnknownHostException, IOException{
@@ -67,8 +70,8 @@ public class MenuCommunicationModel extends Thread {
 				}
 			}
 			
+			out.close();
 			s.close();
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,8 +82,8 @@ public class MenuCommunicationModel extends Thread {
 	}
 
 	public void makeTransfer(Waypoint waypoint, int lockerNumber) {
-		try (DataOutputStream out = new DataOutputStream(s.getOutputStream())) {
-
+		try {
+			
 			waypoint.dumpObject(out);
 			out.writeInt(lockerNumber);
 			out.flush();

@@ -1,4 +1,5 @@
 import actions.Lift;
+import behaviors.Idle;
 import behaviors.MakeTransfer;
 import connection.Connection;
 import lejos.hardware.Button;
@@ -17,8 +18,9 @@ public class Main {
 		Navigation navi = new Navigation(new Pose(0,0,0));
 		Connection connection = new Connection(navi);
 		connection.start();
+		Behavior idle = new Idle();
 		Behavior makeTransfer = new MakeTransfer(navi);
-		Behavior[] bArray = { makeTransfer };
+		Behavior[] bArray = {idle, makeTransfer };
 		Arbitrator arby = new Arbitrator(bArray);
 		arby.go();
 
