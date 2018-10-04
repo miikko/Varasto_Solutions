@@ -9,7 +9,7 @@ public class Lift {
 	
 	// pystytään keskeyttämään kesken noston
 	public void liftUp(int shelfHeight, boolean shortLift) {
-
+		liftMotor.setSpeed(80);
 		if(!shortLift) {
 			switch(shelfHeight) { // muuta korkeudet hyllykorkeuksia vastaaviksi
 			case 1:
