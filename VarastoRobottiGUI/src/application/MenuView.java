@@ -33,7 +33,7 @@ public class MenuView extends Application implements MenuView_IF {
 
 	private Label updateFeedLbl;
 	public Label deliveryStatusLbl;
-	private Button confirmBtn;
+	public Button confirmBtn;
 	private ListView<String> catalogListView;
 	private ListView<Integer> quantityListView;
 	private ObservableList<String> catalogObsList;
@@ -51,7 +51,6 @@ public class MenuView extends Application implements MenuView_IF {
 	public void init() {
 		controller = new MenuController(this);
 		catalogObsList = controller.initializeCatalog();
-
 	}
 
 	@Override
@@ -65,6 +64,8 @@ public class MenuView extends Application implements MenuView_IF {
 			Scene scene = new Scene(borderPane, 1200, 600);
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			ConfirmBtnThread btnThread = new ConfirmBtnThread(this);
+			btnThread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -208,6 +209,14 @@ public class MenuView extends Application implements MenuView_IF {
 		centerGrid.add(quantityListView, 1, 0);
 		centerGrid.add(vBox, 2, 0);
 		centerGrid.add(updateFeedLbl, 3, 0);
+	}
+	
+	public void disableBtn() {
+		confirmBtn.setDisable(true);
+	}
+	
+	public void enableBtn() {
+		confirmBtn.setDisable(false);
 	}
 	
 	@Override
