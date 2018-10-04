@@ -78,10 +78,10 @@ public class Connection extends Thread{
 	}
 	
 	public void sendUpdate(String message) {
+		
 		try {
 			
 			out.writeUTF(message);
-			
 			if (message.equals("Finished")) {
 				out.flush();
 			}

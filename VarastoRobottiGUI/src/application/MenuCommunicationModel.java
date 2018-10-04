@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lejos.robotics.mapping.LineMap;
@@ -59,15 +60,23 @@ public class MenuCommunicationModel extends Thread {
 		try (DataInputStream in = new DataInputStream(s.getInputStream())) {
 
 			while (!quit) {
-
+				
 				if (transferInProgress) {
 					
-					transferStatusMessage.set(in.readUTF());
+					String statusMessage = in.readUTF();
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							setStatusMessage(statusMessage);
+						}
+					});
+					
 
-					if (transferStatusMessage.get().equals("Finished")) {
+					if (statusMessage.equals("Finished")) {
 						transferInProgress = false;
 					}
 				}
+				Thread.sleep(50);
 			}
 			
 			out.close();
@@ -82,6 +91,8 @@ public class MenuCommunicationModel extends Thread {
 	}
 
 	public void makeTransfer(Waypoint waypoint, int lockerNumber) {
+		
+		transferInProgress = true;
 		try {
 			
 			waypoint.dumpObject(out);
@@ -95,7 +106,7 @@ public class MenuCommunicationModel extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		transferInProgress = true;
+		
 	}
 
 	public void setLineMap(LineMap lineMap) {
