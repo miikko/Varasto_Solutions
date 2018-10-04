@@ -19,7 +19,7 @@ public class Main {
 		Connection connection = new Connection(navi);
 		connection.start();
 		Behavior idle = new Idle();
-		Behavior makeTransfer = new MakeTransfer(navi);
+		Behavior makeTransfer = new MakeTransfer(navi, connection);
 		Behavior[] bArray = {idle, makeTransfer };
 		Arbitrator arby = new Arbitrator(bArray);
 		arby.go();

@@ -12,11 +12,13 @@ public class MakeTransfer implements Behavior {
 	private volatile boolean suppressed = false;
 	private Navigation navigation;
 	private Lift lift = new Lift();
+	private Connection connection;
 	private final Waypoint customerWP = new Waypoint(80,0);
 	private final Waypoint defaultWP = new Waypoint(40,0);
 	
-	public MakeTransfer(Navigation navigation) {
+	public MakeTransfer(Navigation navigation, Connection connection) {
 		this.navigation = navigation;
+		this.connection = connection;
 	}
 	
 	
@@ -34,8 +36,10 @@ public class MakeTransfer implements Behavior {
 		suppressed = false;
 		while(!Connection.noOrders()) {
 			Waypoint temp = Connection.getNextOrder();
+			
+			connection.sendUpdate("Moving to pick up the box.");
 			navigation.executePath(temp);
-			// TODO pickup rutiini tähän väliin
+		
 			// faceShelf
 			boolean leftShelf;
 			if(temp.y < 0) {
@@ -57,6 +61,7 @@ public class MakeTransfer implements Behavior {
 			
 			// back out of shelf
 			navigation.driveStraight(false);
+			connection.sendUpdate("Box picked, returning to delivery counter.");
 			
 			// remove current order from orders
 			if(!Connection.orders.get(temp).isEmpty()) {
@@ -70,6 +75,7 @@ public class MakeTransfer implements Behavior {
 			
 			// reset lift-height
 			lift.liftDown();
+			connection.sendUpdate("Finished");
 		}
 		navigation.executePath(defaultWP);
 		Thread.yield();

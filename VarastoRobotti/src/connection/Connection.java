@@ -19,34 +19,25 @@ public class Connection extends Thread{
 	private Navigation navigation;
 	public static Map<Waypoint, ArrayList<Integer>> orders = new HashMap<Waypoint, ArrayList<Integer>>(); 
 	private boolean terminate = false;
+	private DataOutputStream out;
 	
 	public Connection(Navigation navigation) {
 		this.navigation = navigation;
-		//Waypoint waypoint = new Waypoint(10,10);
-		//orders.put(waypoint, new ArrayList<Integer>());
-		//orders.get(waypoint).add(2);
 	}
 	
 	public void run() {
-//		Waypoint wp = new Waypoint(30, 10);
-//		makeNewOrder(wp, 2);
-//		while(!terminate) {
-//			
-//		}
 		
 		try {
 			serv = new ServerSocket(1111);
 			socket = serv.accept();
 			DataInputStream in = new DataInputStream(socket.getInputStream());
+			out = new DataOutputStream(socket.getOutputStream());
 			while(!terminate) {
 				Waypoint waypoint = new Waypoint(0,0);
-				System.out.println("flag");
 				waypoint.loadObject(in);
 				int shelfNumber;
 				shelfNumber = in.readInt();
 				makeNewOrder(waypoint, shelfNumber);
-				System.out.println("another flag");
-				
 			}
 			in.close();
 		} catch (IOException e) {
@@ -84,5 +75,19 @@ public class Connection extends Thread{
 			orders.put(waypoint, new ArrayList<Integer>());
 		}
 		orders.get(waypoint).add(shelfNumber);
+	}
+	
+	public void sendUpdate(String message) {
+		try {
+			
+			out.writeUTF(message);
+			
+			if (message.equals("Finished")) {
+				out.flush();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
