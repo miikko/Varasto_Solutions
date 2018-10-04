@@ -38,7 +38,7 @@ public class MakeTransfer implements Behavior {
 			// TODO pickup rutiini tähän väliin
 			// faceShelf
 			boolean leftShelf;
-			if(temp.x < 100) {
+			if(temp.y < 0) {
 				leftShelf = true;
 			}else {
 				leftShelf = false;
