@@ -4,7 +4,6 @@ import java.util.Set;
 
 import actions.Lift;
 import connection.Connection;
-import connection.Orders;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Behavior;
 import navigation.Navigation;

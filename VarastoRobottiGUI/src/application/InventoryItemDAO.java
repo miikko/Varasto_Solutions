@@ -116,7 +116,7 @@ public class InventoryItemDAO {
 			}
 			
 			if (!onnistui) {
-				System.out.println("Valuuttaa ei löytynyt");
+				System.out.println("Esinettä ei löytynyt");
 			}
 			
 			transaktio.commit();

@@ -1,22 +1,34 @@
 package behaviors;
 
-import connection.Orders;
+import java.util.Set;
+
+import connection.Connection;
+import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Behavior;
 
 public class Idle implements Behavior {
 
 	private volatile boolean suppressed = false;
 	
-	private Orders orders;
 	
-	public Idle(Orders orders) {
-		this.orders = orders;
+	public Idle() {
+		
 	}
 	
 	@Override
 	public boolean takeControl() {
-		// TODO Auto-generated method stub
-		return orders.checkIfEmpty();
+		
+		if (Connection.orders == null) {
+			return true;
+		}
+		Set<Waypoint> keys = Connection.orders.keySet();
+		
+		for (Waypoint key : keys) {
+			if (!Connection.orders.get(key).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
