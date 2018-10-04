@@ -66,11 +66,12 @@ public class MakeTransfer implements Behavior {
 			}
 			
 			// take order to removal point
-			navigation.executePath(defaultWP);
+			navigation.executePath(customerWP);
 			
 			// reset lift-height
 			lift.liftDown();
 		}
+		navigation.executePath(defaultWP);
 		Thread.yield();
 			
 
