@@ -25,8 +25,8 @@ public class Lift2 {
 		liftMotor.rotate(-140, false);
 	}
 	
-	public void liftUpShort() {
-		liftMotor.rotate(30);
+	public void liftUpShort(int angle) {
+		liftMotor.rotate(angle);
 	}
 	
 	public boolean getState() {

@@ -1,9 +1,6 @@
 package model;
 
-import java.io.*;
 import java.net.Socket;
-
-import Inventory.InventoryItem;
 
 public class DataHandler extends Thread {
 	public static final String ADD_TO_STORAGE = "ADD_STORAGE";

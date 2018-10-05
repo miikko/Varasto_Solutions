@@ -1,9 +1,9 @@
 package controller;
 
-import java.io.IOException;
 import application.GUI;
-import Inventory.InventoryItemDAO;
-import model.*;
+import model.Buffer;
+import model.Buffer_IF;
+import model.ConnectionHandler;
 
 public class MainController implements Controller {
 	
