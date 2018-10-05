@@ -1,5 +1,6 @@
 package model;
 
+import java.io.*;
 import java.net.Socket;
 
 public class DataHandler extends Thread {
@@ -43,7 +44,7 @@ public class DataHandler extends Thread {
 			//int shelfNum = dis.readInt();
 			//String color = dis.readUTF();
 			
-			//InventoryItem item = new InventoryItem(color, containerNum, shelfNum);
-			connectionHandler.transferReady(null);
+			InventoryItem item = new InventoryItem("benis", 5, 1);
+			connectionHandler.transferReady(item);
 	}
 }

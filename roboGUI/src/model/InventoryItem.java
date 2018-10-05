@@ -2,9 +2,10 @@ package model;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name="Inventory")
-public class Inventory {
+@Table(name="InventoryItem")
+public class InventoryItem {
 
 	@Column(name="name")
 	private String name;
@@ -20,14 +21,14 @@ public class Inventory {
 	@Column(name="containerNum")
 	private int containerNum;
 	
-	public Inventory(String name, int containerNum, int shelfNum) {
+	public InventoryItem(String name, int containerNum, int shelfNum) {
 		super();
 		this.setName(name);
 		this.setShelfNum(shelfNum);
 		this.containerNum = containerNum;
 	}
 	
-	public Inventory() {
+	public InventoryItem() {
 		super();
 	}
 

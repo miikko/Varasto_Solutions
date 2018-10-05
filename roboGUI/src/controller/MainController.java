@@ -1,9 +1,9 @@
 package controller;
 
+import java.io.IOException;
+
+import model.*;
 import application.GUI;
-import model.Buffer;
-import model.Buffer_IF;
-import model.ConnectionHandler;
 
 public class MainController implements Controller {
 	
@@ -12,6 +12,7 @@ public class MainController implements Controller {
 	private Buffer_IF buffer;
 	
 	public MainController(GUI gui) {
+		
 		this.gui = gui;
 		buffer = new Buffer(this);
 		conHandler = new ConnectionHandler(buffer);

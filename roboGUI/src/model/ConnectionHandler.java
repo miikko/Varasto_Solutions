@@ -1,10 +1,11 @@
 package model;
 
-
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 
 public class ConnectionHandler extends Thread{
 	private static Object lock = new Object();
@@ -13,10 +14,11 @@ public class ConnectionHandler extends Thread{
 	private boolean terminated = false;
 	private Buffer_IF buffer;
 	private boolean transferInProgress;
-	private InventoryDAO dao;
+	private InventoryItemDAO dao;
 	
 	public ConnectionHandler(Buffer_IF buffer) {
 		this.buffer = buffer;
+		dao = new InventoryItemDAO();
 	}
 	
 	public void run() {
@@ -45,9 +47,9 @@ public class ConnectionHandler extends Thread{
 	
 	
 	
-	public void transferReady(Inventory item) {
+	public void transferReady(InventoryItem item) {
 		System.out.println("valmis");
-		//dao.addItem(item);
+		dao.addItem(item);
 		transferInProgress = false;
 	}
 
