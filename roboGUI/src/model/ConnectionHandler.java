@@ -27,8 +27,19 @@ public class ConnectionHandler extends Thread{
 			if(buffer.getBuffer() > 0 && !transferInProgress) {
 				transferInProgress = true;
 				System.out.println("aloittaa");
-				DataHandler dataHandler = new DataHandler(this, buffer);
-				dataHandler.start();
+				int[] list = dao.getNextEmptySpot();
+				DataHandler dataHandler;
+				try {
+					dataHandler = new DataHandler(new Socket(HOST,PORT), this, buffer, list);
+					dataHandler.start();
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 			try {
 				Thread.sleep(50);

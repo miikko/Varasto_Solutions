@@ -13,8 +13,8 @@ public class Navigation2 {
 	private EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.C);
 	private EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 
-	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.93).offset(69);	
-	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.93).offset(-69);
+	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.72).offset(6.25).invert(true);	
+	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.72).offset(-6.25).invert(true);
 	
 	private Chassis chassis = new WheeledChassis(new Wheel[] {leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
 	private MovePilot pilot = new MovePilot(chassis);

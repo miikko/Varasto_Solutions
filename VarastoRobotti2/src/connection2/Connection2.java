@@ -114,7 +114,7 @@ public class Connection2 extends Thread {
 				colorName = "White";
 				break;
 		}
-			
+		System.out.println(colorName);	
 		try {
 			out.writeUTF(colorName);
 			out.flush();

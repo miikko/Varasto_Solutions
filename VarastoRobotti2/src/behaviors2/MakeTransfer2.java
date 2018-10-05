@@ -21,8 +21,12 @@ public class MakeTransfer2 implements Behavior{
 	public MakeTransfer2(Navigation2 navigation2, Connection2 con2) {
 		this.con2 = con2;
 		this.navigation2 = navigation2;
+		lift2 = new Lift2();
+		lift2.liftUpShort(140);
 		cs = new ColorSensor2();
 		cs.kalibroi();
+		
+		
 	}
 	
 	@Override
@@ -39,7 +43,7 @@ public class MakeTransfer2 implements Behavior{
 			
 			// saa värillisen paketin kauhaansa, checkkaa värin ja toteuttaa saadun waypointin
 			Waypoint temp = Connection2.getNextOrder();
-			lift2.liftUpShort(140);
+			//lift2.liftUpShort(140);
 			Delay.msDelay(1000);
 			con2.sendColor(cs.getVäri());
 			//con2.sendUpdate("Color: " + cs.getVäri() + "detected.");

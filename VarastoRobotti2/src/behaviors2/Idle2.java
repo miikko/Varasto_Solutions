@@ -1,5 +1,6 @@
 package behaviors2;
 
+import connection2.Connection2;
 import connection2.Orders;
 import lejos.robotics.subsumption.Behavior;
 import navigation2.Navigation2;
@@ -21,7 +22,7 @@ public class Idle2 implements Behavior{
 	
 	@Override
 	public boolean takeControl() {
-		return orders.checkIfEmpty();
+		return Connection2.noOrders();
 	}
 
 	@Override

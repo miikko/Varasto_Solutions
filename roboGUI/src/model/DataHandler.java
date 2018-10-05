@@ -3,48 +3,47 @@ package model;
 import java.io.*;
 import java.net.Socket;
 
+import lejos.robotics.navigation.Waypoint;
+
 public class DataHandler extends Thread {
 	public static final String ADD_TO_STORAGE = "ADD_STORAGE";
 	private Socket socket;
 	private ConnectionHandler connectionHandler;
 	private Buffer_IF buffer;
+	private int[] list;
 	
-	public DataHandler(ConnectionHandler connectionHandler, Buffer_IF buffer) {
-		//this.socket = socket;
+	public DataHandler(Socket socket, ConnectionHandler connectionHandler, Buffer_IF buffer, int[] list) {
+		this.socket = socket;
 		this.connectionHandler = connectionHandler;
 		this.buffer = buffer;
+		this.list = list;
 	}
 	
 	public void run() {
 
-			//DataInputStream dis = new DataInputStream(socket.getInputStream());
-			//DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+			try {
+				DataInputStream dis = new DataInputStream(socket.getInputStream());
+				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+				Waypoint wp = new Waypoint(10,50);
+				wp.dumpObject(dos);
+				dos.writeInt(list[1]);
+				dos.flush();
+				String color = dis.readUTF();
+				System.out.println(dis.readUTF());
+				System.out.println(dis.readUTF());
+				buffer.remove();
+				InventoryItem item = new InventoryItem(color, list[0], list[1]);
+				connectionHandler.transferReady(item);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			
 			//dos.writeUTF(ADD_TO_STORAGE); //COMMAND
 			//dos.flush();
 			//dis.readBoolean();
 			
-			System.out.println("hakee...");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			buffer.remove();
-			System.out.println("haki");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
-			//int containerNum = dis.readInt();
-			//int shelfNum = dis.readInt();
-			//String color = dis.readUTF();
-			
-			InventoryItem item = new InventoryItem("benis", 5, 1);
-			connectionHandler.transferReady(item);
 	}
 }
