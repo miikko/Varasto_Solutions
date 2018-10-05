@@ -71,4 +71,16 @@ public class Navigation2 {
 		pilot.travel(-distance);
 		pilot.stop();
 	}
+	
+	public void faceShelf(boolean leftShelf) {
+		Pose currentPose = chassis.getPoseProvider().getPose();
+		System.out.println(currentPose.getHeading());
+		int amount;
+		if(!leftShelf) {
+			amount = 90;
+		}else {
+			amount = -90;
+		}
+		pilot.rotate(amount - currentPose.getHeading(), false);
+	}
 }

@@ -23,6 +23,7 @@ public class CollisionAvoidance implements Behavior{
 		while(ir.getDistance() < 30) {
 			navi.stop();
 		}
+		navi.followPath();
 		Thread.yield();
 	}
 

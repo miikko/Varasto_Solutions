@@ -23,7 +23,8 @@ public class Idle2 implements Behavior{
 	@Override
 	public void action() {
 		suppressed = false;
-		// TODO Auto-generated method stub
+
+		
 		while(!suppressed) {
 			Thread.yield();
 		}

@@ -8,13 +8,25 @@ public class Lift2 {
 	private boolean state;
 	
 	// pystytään keskeyttämään kesken noston
-	public void liftUp() {
-		liftMotor.rotate(130, false);
+	public void liftUp(int shelfNumber) {
+		
+		switch(shelfNumber) {
+		case 1:
+			liftMotor.rotate(40);
+			break;
+		case 2:
+			liftMotor.rotate(140);
+			break;
+		}
 	}
 	
 	// pystytään keskeyttämään kesken noston
 	public void liftDown() {
-		liftMotor.rotate(-130, false);
+		liftMotor.rotate(-140, false);
+	}
+	
+	public void liftUpShort() {
+		liftMotor.rotate(30);
 	}
 	
 	public boolean getState() {

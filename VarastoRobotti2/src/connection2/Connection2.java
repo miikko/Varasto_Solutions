@@ -16,7 +16,6 @@ public class Connection2 extends Thread{
 
 	private ServerSocket server;
 	private Socket socket;
-	//private Orders orders;
 	private Navigation2 navi2;
 	public static Map<Waypoint, ArrayList<Integer>> orders = new HashMap<>();
 	private boolean terminate = false;
@@ -33,6 +32,9 @@ public class Connection2 extends Thread{
 				DataInputStream in = new DataInputStream(socket.getInputStream());
 				Waypoint wp = new Waypoint(0,0);
 				wp.loadObject(in);
+				int shelfNumber;
+				shelfNumber = in.readInt();
+				makeNewOrder(wp, shelfNumber);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -62,5 +64,12 @@ public class Connection2 extends Thread{
 			}
 		}
 		return null;
+	}
+	
+	public void makeNewOrder(Waypoint waypoint, int shelfNumber) {
+		if (orders.get(waypoint) == null) {
+			orders.put(waypoint, new ArrayList<Integer>());
+		}
+		orders.get(waypoint).add(shelfNumber);
 	}
 }
