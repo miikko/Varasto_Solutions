@@ -13,18 +13,18 @@ public class Lift {
 		if(!shortLift) {
 			switch(shelfHeight) { // muuta korkeudet hyllykorkeuksia vastaaviksi
 			case 1:
-				liftMotor.rotate(60, false);
+				liftMotor.rotate(0, false);
 				break;
 			case 2:
-				liftMotor.rotate(100, false);
+				liftMotor.rotate(120, false);
 				break;
 			case 3:
-				liftMotor.rotate(140, false);
+				liftMotor.rotate(200, false);
 				break;
 			
 			}
 		}else {
-			liftMotor.rotate(30, false); // muuta hyllyväliin sopivaksi
+			liftMotor.rotate(60, false); // muuta hyllyväliin sopivaksi
 		}
 		
 		//liftMotor.rotate(130, false);

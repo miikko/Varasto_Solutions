@@ -25,7 +25,6 @@ public class MakeTransfer implements Behavior {
 	@Override
 	public boolean takeControl() {
 		// TODO Auto-generated method stub
-		//return (!orders.checkIfEmpty());
 		return !Connection.noOrders();
 		
 	}
