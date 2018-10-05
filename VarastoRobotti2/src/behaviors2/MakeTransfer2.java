@@ -1,5 +1,6 @@
 package behaviors2;
 
+import actions2.ColorSensor2;
 import actions2.Lift2;
 import connection2.Connection2;
 import connection2.Orders;
@@ -15,10 +16,13 @@ public class MakeTransfer2 implements Behavior{
 	private Waypoint homeWP = new Waypoint(0,0);
 	private Lift2 lift2;
 	private Connection2 con2;
+	private ColorSensor2 cs;
 	
 	public MakeTransfer2(Navigation2 navigation2, Connection2 con2) {
 		this.con2 = con2;
 		this.navigation2 = navigation2;
+		cs = new ColorSensor2();
+		cs.kalibroi();
 	}
 	
 	@Override
@@ -33,10 +37,17 @@ public class MakeTransfer2 implements Behavior{
 		suppressed = false;
 		while(!Connection2.noOrders()) {
 			
+			// saa värillisen paketin kauhaansa, checkkaa värin ja toteuttaa saadun waypointin
 			Waypoint temp = Connection2.getNextOrder();
-			
+			lift2.liftUpShort(140);
+			Delay.msDelay(1000);
+			con2.sendColor(cs.getVäri());
+			con2.sendUpdate("Color: " + cs.getVäri() + "detected.");
+			lift2.liftDown();
+			Delay.msDelay(3000);
 			con2.sendUpdate("Transferring packet to storage.");
 			navigation2.executePath(temp, true);
+			
 			/*
 			boolean leftShelf;
 			if(temp.x < 100) {
@@ -53,6 +64,7 @@ public class MakeTransfer2 implements Behavior{
 			navigation2.driveForward(5);
 			lift2.liftUpShort(30);
 			navigation2.driveBackward(5);
+			
 			
 			con2.sendUpdate("Packet transferred.");
 			if(!Connection2.orders.get(temp).isEmpty()) {

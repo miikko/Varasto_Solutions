@@ -89,4 +89,38 @@ public class Connection2 extends Thread {
 		}
 
 	}
+	
+	public void sendColor(int color) {
+		String colorName = null;
+		
+		switch(color) {
+			case 0:
+				colorName = "Red";
+				break;
+				
+			case 1:
+				colorName = "Green";
+				break;
+				
+			case 2:
+				colorName = "Blue";
+				break;
+				
+			case 3:
+				colorName = "Yellow";
+				break;
+				
+			case 4:
+				colorName = "White";
+				break;
+		}
+			
+		try {
+			out.writeUTF(colorName);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
 }
