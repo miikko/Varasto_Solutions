@@ -15,6 +15,10 @@ public class Idle2 implements Behavior{
 		this.orders = orders;
 	}
 	
+	public Idle2() {
+		
+	}
+	
 	@Override
 	public boolean takeControl() {
 		return orders.checkIfEmpty();

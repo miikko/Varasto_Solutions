@@ -16,7 +16,8 @@ public class MakeTransfer2 implements Behavior{
 	private Lift2 lift2;
 	private Connection2 con2;
 	
-	public MakeTransfer2(Navigation2 navigation2) {
+	public MakeTransfer2(Navigation2 navigation2, Connection2 con2) {
+		this.con2 = con2;
 		this.navigation2 = navigation2;
 	}
 	
