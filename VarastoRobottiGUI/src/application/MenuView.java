@@ -40,13 +40,12 @@ public class MenuView extends Application implements MenuView_IF {
 	private ObservableList<Integer> quantityObsList;
 	private MenuController controller;
 	private BorderPane borderPane;
-	
+
 	private VBox leftBox;
 	private VBox leftBoxConnected;
 	private Button leftBoxButton;
-	
+
 	private GridPane centerGrid;
-	
 
 	public void init() {
 		controller = new MenuController(this);
@@ -60,7 +59,7 @@ public class MenuView extends Application implements MenuView_IF {
 			borderPane = new BorderPane();
 			createLeftBox();
 			borderPane.setLeft(leftBox);
-			createMainGrid();			
+			createMainGrid();
 			Scene scene = new Scene(borderPane, 1200, 600);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -94,8 +93,8 @@ public class MenuView extends Application implements MenuView_IF {
 	public void updateDeliveryStatus(String message) {
 		deliveryStatusLbl.setText(message);
 	}
-	
-	//Method for exception popup window
+
+	// Method for exception popup window
 	@Override
 	public void popExceptionAlert(String headerText, String contentText, Exception e) {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -138,8 +137,8 @@ public class MenuView extends Application implements MenuView_IF {
 		createLeftBoxConnected();
 		borderPane.setLeft(leftBoxConnected);
 	}
-	
-	//LeftBox of BorderPane when not Conneted
+
+	// LeftBox of BorderPane when not Conneted
 	private void createLeftBox() {
 		leftBox = new VBox();
 		leftBox.getStyleClass().add("leftBox");
@@ -151,27 +150,29 @@ public class MenuView extends Application implements MenuView_IF {
 				// TODO Auto-generated method stub
 				controller.connectRobot();
 			}
-			
+
 		});
 		leftBox.getChildren().addAll(leftBoxButton);
 	}
-	
-	//LeftBox of BorderPane when Connected
+
+	// LeftBox of BorderPane when Connected
 	private void createLeftBoxConnected() {
 		leftBoxConnected = new VBox();
 		leftBoxConnected.getStyleClass().add("leftBox");
 		Label label = new Label("Connected");
 		leftBoxConnected.getChildren().add(label);
 	}
-	
-	//MainGrid of view, Center of BorderPane 
+
+	// MainGrid of view, Center of BorderPane
 	private void createMainGrid() {
 		catalogListView = new ListView<String>(catalogObsList);
 		catalogListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String oldValue, String newValue) {
-				controller.updateQuantity(newValue);
+				if (newValue != null) {
+					controller.updateQuantity(newValue);
+				}
 			}
 
 		});
@@ -186,8 +187,9 @@ public class MenuView extends Application implements MenuView_IF {
 			public void handle(ActionEvent e) {
 				if (catalogListView.getSelectionModel().getSelectedIndex() >= 0
 						&& quantityListView.getSelectionModel().getSelectedIndex() >= 0) {
-					
-					controller.startDelivery(catalogListView.getSelectionModel().getSelectedItem());
+
+					controller.startDelivery(catalogListView.getSelectionModel().getSelectedItem(),
+							quantityListView.getSelectionModel().getSelectedItem());
 				}
 			}
 
@@ -197,8 +199,8 @@ public class MenuView extends Application implements MenuView_IF {
 		vBox.getChildren().add(deliveryStatusLbl);
 		vBox.getChildren().add(confirmBtn);
 		vBox.setMinWidth(200);
-		VBox.setMargin(confirmBtn, new Insets(300,0,0,0));
-		
+		VBox.setMargin(confirmBtn, new Insets(300, 0, 0, 0));
+
 		updateFeedLbl = new Label("Inventory updates will be displayed here.");
 
 		centerGrid = new GridPane();
@@ -211,14 +213,14 @@ public class MenuView extends Application implements MenuView_IF {
 		centerGrid.add(updateFeedLbl, 3, 0);
 	}
 	
-	public void disableBtn() {
-		confirmBtn.setDisable(true);
+	public void removeItemFromCatalog(String itemName) {
+		catalogObsList.remove(itemName);
 	}
 	
-	public void enableBtn() {
-		confirmBtn.setDisable(false);
+	public void flushQuantityList() {
+		quantityObsList.clear();
 	}
-	
+
 	@Override
 	public void stop() {
 		controller.terminateSessionFactory();
