@@ -78,7 +78,7 @@ public class InventoryItemDAO {
 			
 			inventory = result;
 			
-		} catch (Exception e) {""
+		} catch (Exception e) {
 
 			if (transaktio != null) {
 				transaktio.rollback();
