@@ -42,10 +42,10 @@ public class MakeTransfer2 implements Behavior{
 			lift2.liftUpShort(140);
 			Delay.msDelay(1000);
 			con2.sendColor(cs.getVäri());
-			con2.sendUpdate("Color: " + cs.getVäri() + "detected.");
+			//con2.sendUpdate("Color: " + cs.getVäri() + "detected.");
 			lift2.liftDown();
 			Delay.msDelay(3000);
-			con2.sendUpdate("Transferring packet to storage.");
+			//con2.sendUpdate("Transferring packet to storage.");
 			navigation2.executePath(temp, true);
 			
 			/*
@@ -75,7 +75,7 @@ public class MakeTransfer2 implements Behavior{
 			
 			lift2.liftDown();
 		}
-		con2.sendUpdate("Returning home.");
+		//con2.sendUpdate("Returning home.");
 		navigation2.executePath(homeWP, false);
 		con2.sendUpdate("Finished");
 		Thread.yield();
