@@ -67,11 +67,10 @@ public class Navigation {
 	
 	public void driveStraight(boolean forward) {
 		if(forward) {
-			pilot.forward();
+			pilot.travel(9.5);
 		}else {
-			pilot.backward();
+			pilot.travel(-9.5);
 		}
-		Delay.msDelay(500);
 		pilot.stop();
 	}
 	
