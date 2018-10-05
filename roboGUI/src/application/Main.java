@@ -3,17 +3,14 @@ package application;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import controller.Controller;
-import controller.MainController;
+import controller.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 
@@ -21,18 +18,17 @@ import javafx.scene.layout.*;
 public class Main extends Application implements GUI{
 	
 	private Controller controller;
+	
 	private BorderPane root;
 	
 	private VBox leftBox;
 	private VBox leftBoxConnected;
 	private Button topBoxButton;
-	private Button test;
 	
 	private VBox centerBox;
 	private HBox centerBoxH1;
 	private Button addButton;
 	private Label packets;
-	
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -40,10 +36,16 @@ public class Main extends Application implements GUI{
 			root = new BorderPane();
 			createLeftBox();
 			root.setLeft(leftBox);
-			Scene scene = new Scene(root,600,350);
+			Scene scene = new Scene(root,500,150);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	            @Override
+	            public void handle(WindowEvent event) {
+	                System.exit(0);
+	            }
+	        });
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -55,7 +57,9 @@ public class Main extends Application implements GUI{
 	
 	@Override
 	public void init() {
+		packets = new Label("0");
 		controller = new MainController(this);
+		
 	}
 	
 	public void createLeftBox() {
@@ -66,7 +70,6 @@ public class Main extends Application implements GUI{
 
 			@Override
 			public void handle(ActionEvent e) {
-				// TODO Auto-generated method stub
 				controller.connectRobot();
 			}
 			
@@ -83,20 +86,20 @@ public class Main extends Application implements GUI{
 	
 	public void createCenterBox() {
 		centerBox  = new VBox();
+		centerBox.getStyleClass().add("centerBox");
 		centerBoxH1 = new HBox();
 		centerBoxH1.getStyleClass().add("centerBoxH1");
-		
 		addButton = new Button("add packets");
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				
+				controller.addPacket();
 			}
 			
 		});
-		packets = new Label("0");
+		
 		centerBoxH1.getChildren().addAll(addButton, new Label("Packets waiting for transfer: "), packets);
 		centerBox.getChildren().add(centerBoxH1);
 	}
@@ -108,6 +111,7 @@ public class Main extends Application implements GUI{
 		root.setLeft(leftBoxConnected);
 		createCenterBox();
 		root.setCenter(centerBox);
+		
 	}
 
 	
@@ -148,5 +152,14 @@ public class Main extends Application implements GUI{
 		alert.showAndWait();
 	
 	}
+
 	
+	
+
+
+	@Override
+	public void setBufferValue (int value) {
+		packets.setText(""+value);
+		//System.out.println(value);
+	}
 }

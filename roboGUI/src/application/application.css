@@ -5,13 +5,16 @@
 	-fx-min-width: 90;
 	-fx-padding: 10;
 	-fx-alignment: top-center;
-	-fx-background-color : linear-gradient(#e66465, #9198e5);
+	-fx-background-color: linear-gradient(#e66465, #9198e5);
 }
 
 .centerBoxH1  {
 	-fx-padding: 10;
-}
+}	
 
 .centerBoxH1 * {
 	-fx-padding: 10;
+}
+
+.centerBox {
 }
