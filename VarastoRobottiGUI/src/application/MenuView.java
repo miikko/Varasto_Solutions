@@ -34,6 +34,7 @@ public class MenuView extends Application implements MenuView_IF {
 	private Label updateFeedLbl;
 	public Label deliveryStatusLbl;
 	public Button confirmBtn;
+	private Button updateBtn;
 	private ListView<String> catalogListView;
 	private ListView<Integer> quantityListView;
 	private ObservableList<String> catalogObsList;
@@ -195,9 +196,20 @@ public class MenuView extends Application implements MenuView_IF {
 
 		});
 		confirmBtn.setMinWidth(200);
+		updateBtn = new Button("Update");
+		updateBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				controller.initializeCatalog();
+			}
+			
+		});
+		updateBtn.setMinWidth(200);
 		VBox vBox = new VBox(20);
 		vBox.getChildren().add(deliveryStatusLbl);
 		vBox.getChildren().add(confirmBtn);
+		vBox.getChildren().add(updateBtn);
 		vBox.setMinWidth(200);
 		VBox.setMargin(confirmBtn, new Insets(300, 0, 0, 0));
 
