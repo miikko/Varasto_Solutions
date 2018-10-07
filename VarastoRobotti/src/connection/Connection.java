@@ -16,13 +16,12 @@ public class Connection extends Thread{
 
 	private ServerSocket serv;
 	private Socket socket;
-	private Navigation navigation;
 	public static Map<Waypoint, ArrayList<Integer>> orders = new HashMap<Waypoint, ArrayList<Integer>>(); 
 	private boolean terminate = false;
 	private DataOutputStream out;
 	
-	public Connection(Navigation navigation) {
-		this.navigation = navigation;
+	public Connection() {
+		
 	}
 	
 	public void run() {

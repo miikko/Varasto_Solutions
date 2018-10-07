@@ -14,7 +14,6 @@ import lejos.robotics.navigation.Waypoint;
 
 public class MenuCommunicationModel extends Thread {
 
-	private Robot[] robots;
 	private boolean quit = false;
 	private final String HOST = "10.0.1.1";
 	private final int PORT = 1111;

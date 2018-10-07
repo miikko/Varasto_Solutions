@@ -1,7 +1,5 @@
 package behaviors;
 
-import java.util.Set;
-
 import actions.Lift;
 import connection.Connection;
 import lejos.robotics.navigation.Waypoint;

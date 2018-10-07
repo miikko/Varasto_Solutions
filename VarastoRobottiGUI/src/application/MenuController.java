@@ -1,13 +1,10 @@
 package application;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.text.Text;
 import lejos.robotics.navigation.Waypoint;
 
 public class MenuController {

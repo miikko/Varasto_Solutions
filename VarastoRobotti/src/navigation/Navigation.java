@@ -1,15 +1,11 @@
 package navigation;
 
-import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
-import lejos.robotics.MirrorMotor;
 import lejos.robotics.chassis.*;
 import lejos.robotics.localization.PoseProvider;
-import lejos.robotics.mapping.LineMap;
 import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.*;
-import lejos.utility.Delay;
 
 public class Navigation {
 
@@ -27,7 +23,6 @@ public class Navigation {
 	private MovePilot pilot = new MovePilot(chassis);
 	private PoseProvider poseProvider = chassis.getPoseProvider();
 	private Navigator navi = new Navigator(pilot, poseProvider);
-	private LineMap map = null;
 	
 	public Navigation(Pose startPose) {
 		poseProvider.setPose(startPose);
@@ -45,10 +40,6 @@ public class Navigation {
 		return poseProvider.getPose();
 	}
 	
-	public void setLineMap(LineMap map) {
-		this.map = map;
-	}
-	
 	//TODO requires testing
 	private Path findPath(Pose pose, Waypoint targetWaypoint) {
 		Waypoint wp = null;
@@ -59,10 +50,6 @@ public class Navigation {
 		path.add(wp);
 		path.add(targetWaypoint);
 		return path;
-	}
-	
-	public void rotate90() {
-		pilot.rotate(45);
 	}
 	
 	public void driveStraight(boolean forward) {
@@ -76,7 +63,6 @@ public class Navigation {
 	
 	public void faceShelf(boolean leftShelf) {
 		Pose currentPose = chassis.getPoseProvider().getPose();
-		System.out.println(currentPose.getHeading());
 		int amount;
 		if(!leftShelf) {
 			amount = 90;
