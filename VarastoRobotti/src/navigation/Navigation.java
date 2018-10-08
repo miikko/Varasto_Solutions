@@ -15,8 +15,8 @@ public class Navigation {
 	
 	
 	//TODO Diameters, Offsets
-	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.72).offset(6.25).invert(true);	
-	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.72).offset(-6.25).invert(true);
+	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.89).offset(6.575).invert(true);	
+	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.91).offset(-6.575).invert(true);
 	
 	//TODO check correct wheels
 	private Chassis chassis = new WheeledChassis(new Wheel[] {leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -24,9 +24,11 @@ public class Navigation {
 	private PoseProvider poseProvider = chassis.getPoseProvider();
 	private Navigator navi = new Navigator(pilot, poseProvider);
 	
+	private Pose startPose;
+	
 	public Navigation(Pose startPose) {
-		poseProvider.setPose(startPose);
-
+		this.startPose = startPose;
+		poseProvider.setPose(new Pose(0,0,0));
 	}
 	
 	public void executePath(Waypoint targetWaypoint) {
@@ -65,11 +67,20 @@ public class Navigation {
 		Pose currentPose = chassis.getPoseProvider().getPose();
 		int amount;
 		if(!leftShelf) {
-			amount = 90;
+			amount = 0;
 		}else {
-			amount = -90;
+			amount = 0;
 		}
 		pilot.rotate(amount - currentPose.getHeading(), false);
 	}
 	
+	public void rotateToStartingHeading() {
+		Pose currentPose = chassis.getPoseProvider().getPose();
+		float currentHeading = currentPose.getHeading();
+		pilot.rotate(currentHeading - currentHeading);
+	}
+	
+	public void setPose(Pose pose) {
+		poseProvider.setPose(pose);
+	}
 }

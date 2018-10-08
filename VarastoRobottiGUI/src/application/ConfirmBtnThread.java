@@ -7,6 +7,7 @@ public class ConfirmBtnThread extends Thread {
 
 	public ConfirmBtnThread(MenuView view) {
 		this.view = view;
+		setDaemon(true);
 	}
 
 	@Override

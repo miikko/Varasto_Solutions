@@ -2,6 +2,7 @@ package behaviors;
 
 import actions.Lift;
 import connection.Connection;
+import lejos.robotics.navigation.Pose;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Behavior;
 import navigation.Navigation;
@@ -11,8 +12,8 @@ public class MakeTransfer implements Behavior {
 	private Navigation navigation;
 	private Lift lift = new Lift();
 	private Connection connection;
-	private final Waypoint customerWP = new Waypoint(80,0);
-	private final Waypoint defaultWP = new Waypoint(40,0);
+	private final Waypoint customerWP = new Waypoint(10,-50);
+	private final Waypoint defaultWP = new Waypoint(0,0,0);
 	
 	public MakeTransfer(Navigation navigation, Connection connection) {
 		this.navigation = navigation;
@@ -39,12 +40,12 @@ public class MakeTransfer implements Behavior {
 		
 			// faceShelf
 			boolean leftShelf;
-			if(temp.y < 0) {
+			if(temp.y < -50) {
 				leftShelf = true;
 			}else {
 				leftShelf = false;
 			}
-			navigation.faceShelf(leftShelf);
+			//navigation.faceShelf(leftShelf);
 			
 			// lift to temp height
 			lift.liftUp(Connection.orders.get(temp).get(Connection.orders.get(temp).size() - 1), false);
@@ -74,6 +75,8 @@ public class MakeTransfer implements Behavior {
 			lift.liftDown();
 		}
 		navigation.executePath(defaultWP);
+		navigation.setPose(new Pose(0,3,0));
+		//navigation.rotateToStartingHeading();
 		connection.sendUpdate("Finished");
 		Thread.yield();
 			

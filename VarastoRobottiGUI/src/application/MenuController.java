@@ -12,7 +12,7 @@ public class MenuController {
 	private InventoryItemDAO dao;
 	private MenuView view;
 	private MenuCommunicationModel commModel;
-	private final Waypoint[] SHELFCOORDINATES = new Waypoint[] { new Waypoint(36, 44) };
+	private final Waypoint[] SHELFCOORDINATES = new Waypoint[] { new Waypoint(32, -28,0), new Waypoint(63, -70,0) };
 	private ObservableList<String> catalog;
 
 	public MenuController(MenuView view) {
