@@ -5,9 +5,12 @@ import java.net.Socket;
 import java.util.*;
 
 import lejos.robotics.navigation.Waypoint;
-
+/**
+ * This class purpose is to handle data in new sockets.
+ * @author Eero
+ *
+ */
 public class DataHandler extends Thread {
-	public static final String ADD_TO_STORAGE = "ADD_STORAGE";
 	private Socket socket;
 	private ConnectionHandler connectionHandler;
 	private Buffer_IF buffer;
@@ -20,7 +23,12 @@ public class DataHandler extends Thread {
 		STORAGE_MAP = Collections.unmodifiableMap(STORAGE_MAP);	
 	}
 	
-	
+	/**
+	 * 
+	 * @param connectionHandler ConnectionHandler.
+	 * @param buffer Packet Buffer.
+	 * @param nextEmptySlot Next Empty Slot in database.
+	 */
 	public DataHandler(ConnectionHandler connectionHandler, Buffer_IF buffer, int[] nextEmptySlot) {
 		this.connectionHandler = connectionHandler;
 		this.buffer = buffer;

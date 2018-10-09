@@ -14,7 +14,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 
-
+/**
+ * Graphical User Interface.
+ * @author Eero
+ *
+ */
 public class Main extends Application implements GUI{
 	
 	private Controller controller;
@@ -30,6 +34,9 @@ public class Main extends Application implements GUI{
 	private Button addButton;
 	private Label packets;
 	
+	/**
+	 * Starts primary stage.
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -51,10 +58,17 @@ public class Main extends Application implements GUI{
 		}
 	}
 	
+	/**
+	 * Launches args.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
+	/**
+	 * Initializes required properties.
+	 */
 	@Override
 	public void init() {
 		packets = new Label("0");
@@ -62,7 +76,7 @@ public class Main extends Application implements GUI{
 		
 	}
 	
-	public void createLeftBox() {
+	private void createLeftBox() {
 		leftBox = new VBox();
 		leftBox.getStyleClass().add("leftBox");
 		topBoxButton = new Button("Connect");
@@ -77,14 +91,16 @@ public class Main extends Application implements GUI{
 		leftBox.getChildren().addAll(topBoxButton);
 	}
 	
-	public void createLeftBoxConnected() {
+	
+	private void createLeftBoxConnected() {
 		leftBoxConnected = new VBox();
 		leftBoxConnected.getStyleClass().add("leftBox");
 		Label label = new Label("Connected");
 		leftBoxConnected.getChildren().add(label);
 	}
 	
-	public void createCenterBox() {
+	
+	private void createCenterBox() {
 		centerBox  = new VBox();
 		centerBox.getStyleClass().add("centerBox");
 		centerBoxH1 = new HBox();
@@ -104,6 +120,9 @@ public class Main extends Application implements GUI{
 		centerBox.getChildren().add(centerBoxH1);
 	}
 
+	/**
+	 * Sets view to connected.
+	 */
 	@Override
 	public void setConnected() {
 		// TODO Auto-generated method stub
@@ -115,7 +134,12 @@ public class Main extends Application implements GUI{
 	}
 
 	
-	//ExceptionPopupWindow
+	/**
+	 * Creates new Alert window for exception.
+	 * @param headerText Header text.
+	 * @param contentText Content text.
+	 * @param e Exception.
+	 */
 	@Override
 	public void popExceptionAlert(String headerText, String contentText, Exception e) {
 
@@ -157,6 +181,10 @@ public class Main extends Application implements GUI{
 	
 
 
+	/**
+	 * Sets new value for buffer label.
+	 * @param value Buffer size.
+	 */
 	@Override
 	public void setBufferValue (int value) {
 		packets.setText(""+value);

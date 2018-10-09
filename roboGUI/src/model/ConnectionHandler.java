@@ -5,12 +5,18 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * 
+ * ConnectionHandler class is for handling new connections by creating DataHandler objects when new package needs to be picked.
  * @author Eero
  *
  */
 public class ConnectionHandler extends Thread{
+	/**
+	 * Static Host name.
+	 */
 	public static final String HOST = "10.0.1.1";
+	/**
+	 * Static port number.
+	 */
 	public static final int PORT = 1111;
 	
 	private boolean terminated = false;
@@ -19,9 +25,8 @@ public class ConnectionHandler extends Thread{
 	private InventoryItemDAO dao;
 	
 	/**
-	 * ConnectionHandler constructor.
-	 * Creates new DataAccessObject for InventoryItems.
-	 * @param buffer
+	 * 
+	 * @param buffer Buffer for packets.
 	 */
 	public ConnectionHandler(Buffer_IF buffer) {
 		this.buffer = buffer;
@@ -47,7 +52,7 @@ public class ConnectionHandler extends Thread{
 	}
 	
 	/**
-	 * Method for checking connection.
+	 * Checks robot connection
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
@@ -58,8 +63,7 @@ public class ConnectionHandler extends Thread{
 	
 	
 	/**
-	 * Method for telling ConnectionHandler that transfer is ready.
-	 * Adds item in parameter into database.
+	 * Inserts item into database and sets transfer progress to false.
 	 * @param item
 	 */
 	public void transferReady(InventoryItem item) {

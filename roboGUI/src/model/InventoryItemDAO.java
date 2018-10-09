@@ -10,7 +10,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
- * 
+ * ORM DataAccessObject
  * @author Eero
  *
  */
@@ -20,7 +20,7 @@ public class InventoryItemDAO {
 	private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
 
 	/**
-	 * 
+	 * Parameterless constructor that creates new session factory.
 	 */
 	public InventoryItemDAO() {
 

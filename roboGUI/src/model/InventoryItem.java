@@ -3,6 +3,7 @@ package model;
 import javax.persistence.*;
 
 /**
+ * ORM class for inventory items.
  * 
  * @author Eero
  * 
@@ -27,10 +28,10 @@ public class InventoryItem {
 	private int containerNum;
 	
 	/**
-	 * 
-	 * @param name
-	 * @param containerNum
-	 * @param shelfNum
+	 * Constructor that sets item name, container number and shelf number.
+	 * @param name Item name.
+	 * @param containerNum Container number.
+	 * @param shelfNum Shelf number.
 	 */
 	public InventoryItem(String name, int containerNum, int shelfNum) {
 		super();
@@ -55,7 +56,7 @@ public class InventoryItem {
 	}
 
 	/**
-	 * Sets item name
+	 * Sets item name. Name is color of package.
 	 * @param color
 	 */
 	public void setName(String color) {

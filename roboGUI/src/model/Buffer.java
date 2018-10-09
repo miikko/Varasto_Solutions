@@ -5,23 +5,25 @@ import controller.Controller;
 import javafx.application.Platform;
 
 /**
- * 
+ * This class is for handling packet buffer.
  * @author Eero
- *
- *Buffer class is for handling packet buffer.
  */
 public class Buffer implements Buffer_IF{
 
 	private int buf;
 	private Controller controller;
 	
+	/**
+	 * Creates new buffer with buffer value of 0.
+	 * @param controller
+	 */
 	public Buffer(Controller controller) {
 		buf= 0;
 		this.controller = controller;
 	}
 
 	/**
-	 * returns buffer size.
+	 * Gets buffer size.
 	 */
 	public int getBuffer() {
 		return buf;

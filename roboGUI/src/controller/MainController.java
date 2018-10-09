@@ -5,7 +5,7 @@ import java.io.IOException;
 import model.*;
 import application.GUI;
 /**
- * 
+ * This class purpose is control model and view.
  * @author Eero
  *
  */
@@ -16,8 +16,7 @@ public class MainController implements Controller {
 	private Buffer_IF buffer;
 	
 	/**
-	 * MainController constructor
-	 * @param gui
+	 * @param gui Application graphical user interface.
 	 */
 	public MainController(GUI gui) {
 		
@@ -29,7 +28,7 @@ public class MainController implements Controller {
 	}
 	
 	/**
-	 *Method for checking robot connection. 
+	 *Checks robot connection and sets GUI view to connected.
 	 */
 	@Override
 	public void connectRobot() {
@@ -43,7 +42,7 @@ public class MainController implements Controller {
 	}
 
 	/**
-	 *Method for adding packet into buffer. 
+	 *Adds packet into buffer.
 	 */
 	@Override
 	public void addPacket() {
@@ -51,7 +50,7 @@ public class MainController implements Controller {
 	}
 	
 	/**
-	 *Method for updating buffer size.
+	 *Updates buffer value label.
 	 */
 	@Override
 	public void updateLabel(int inte) {
