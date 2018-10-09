@@ -1,17 +1,22 @@
 package actions;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
-
+/**
+ * This class is used for initialising and controlling the lift motor.
+ * @author 
+ *
+ */
 public class Lift {
 	private EV3MediumRegulatedMotor liftMotor = new EV3MediumRegulatedMotor(MotorPort.A);
 	private boolean state;
-	// 160 astetta = 11cm
 	
-	// pystytään keskeyttämään kesken noston
+	/**
+	 * Lifts the forks to the right shelf height or picks up a package from the shelf
+	 */
 	public void liftUp(int shelfHeight, boolean shortLift) {
 		liftMotor.setSpeed(80);
 		if(!shortLift) {
-			switch(shelfHeight) { // muuta korkeudet hyllykorkeuksia vastaaviksi
+			switch(shelfHeight) { 
 			case 1:
 				liftMotor.rotate(0, false);
 				break;
@@ -24,17 +29,15 @@ public class Lift {
 			
 			}
 		}else {
-			liftMotor.rotate(60, false); // muuta hyllyväliin sopivaksi
+			liftMotor.rotate(60, false); 
 		}
-		
-		//liftMotor.rotate(130, false);
 	}
-	
-	// pystytään keskeyttämään kesken noston
+	/**
+	 * Rotates the lift motor back to its start position
+	 */
 	public void liftDown() {
 		liftMotor.setSpeed(80);
-		liftMotor.rotate(-liftMotor.getTachoCount(), false); // palauttaa nostomoottorin alkuasemaansa
-		//liftMotor.rotate(-130, false);
+		liftMotor.rotate(-liftMotor.getTachoCount(), false); 
 	}
 	
 	public boolean getState() {

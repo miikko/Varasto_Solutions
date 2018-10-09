@@ -11,7 +11,11 @@ import java.util.Set;
 
 import lejos.robotics.navigation.Waypoint;
 import navigation.Navigation;
-
+/**
+ * This class handles the connection between EV3 and PC in a thread and saves the received orders into a HashMap.
+ * @author 
+ *
+ */
 public class Connection extends Thread{
 
 	private ServerSocket serv;
@@ -23,7 +27,9 @@ public class Connection extends Thread{
 	public Connection() {
 		
 	}
-	
+	/**
+	 * Opens the server, socket and input stream and keeps them open until terminated.
+	 */
 	public void run() {
 		
 		try {
@@ -44,11 +50,15 @@ public class Connection extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Terminates the thread
+	 */
 	public void terminate() {
 		terminate = true;
 	}
-	
+	/**
+	 * Checks whether there's orders or not
+	 */
 	public static boolean noOrders() {
 		Set<Waypoint> set = orders.keySet();
 		for(Waypoint waypoint : set) {
@@ -58,7 +68,9 @@ public class Connection extends Thread{
 		}
 		return true;
 	}
-	
+	/**
+	 * Finds the next undone order and returns its waypoint
+	 */
 	public static Waypoint getNextOrder() {
 		Set<Waypoint> set = orders.keySet();
 		for(Waypoint waypoint : set) {
@@ -68,14 +80,18 @@ public class Connection extends Thread{
 		}
 		return null;
 	}
-	
+	/**
+	 * Adds a new order to the HashMap with Waypoint and shelf number parameters.
+	 */
 	public void makeNewOrder(Waypoint waypoint, int shelfNumber) {
 		if (orders.get(waypoint) == null) {
 			orders.put(waypoint, new ArrayList<Integer>());
 		}
 		orders.get(waypoint).add(shelfNumber);
 	}
-	
+	/**
+	 * Sends a message to the PC when a transfer is finished
+	 */
 	public void sendUpdate(String message) {
 		
 		try {

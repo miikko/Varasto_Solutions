@@ -6,7 +6,11 @@ import lejos.robotics.navigation.Pose;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Behavior;
 import navigation.Navigation;
-
+/**
+ * This class contains the behavior for retrieving an order and taking it to the customer.
+ * @author 
+ *
+ */
 public class MakeTransfer implements Behavior {
 	private volatile boolean suppressed = false;
 	private Navigation navigation;
@@ -15,12 +19,17 @@ public class MakeTransfer implements Behavior {
 	private final Waypoint customerWP = new Waypoint(10,-50);
 	private final Waypoint defaultWP = new Waypoint(0,0,0);
 	
+	/**
+	 * A constructor with Navigation and Connection parameters.
+	 */
 	public MakeTransfer(Navigation navigation, Connection connection) {
 		this.navigation = navigation;
 		this.connection = connection;
 	}
 	
-	
+	/**
+	 * Starts the behavior when there are orders.
+	 */
 	@Override
 	public boolean takeControl() {
 		// TODO Auto-generated method stub
@@ -28,6 +37,9 @@ public class MakeTransfer implements Behavior {
 		
 	}
 
+	/**
+	 * Executes the order retrieval actions
+	 */
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
@@ -45,7 +57,6 @@ public class MakeTransfer implements Behavior {
 			}else {
 				leftShelf = false;
 			}
-			//navigation.faceShelf(leftShelf);
 			
 			// lift to temp height
 			lift.liftUp(Connection.orders.get(temp).get(Connection.orders.get(temp).size() - 1), false);
@@ -82,7 +93,9 @@ public class MakeTransfer implements Behavior {
 			
 
 	}
-
+	/**
+	 * Suppresses the behavior.
+	 */
 	@Override
 	public void suppress() {
 		// TODO Auto-generated method stub
