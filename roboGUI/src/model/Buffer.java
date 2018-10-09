@@ -4,6 +4,12 @@ package model;
 import controller.Controller;
 import javafx.application.Platform;
 
+/**
+ * 
+ * @author Eero
+ *
+ *Buffer class is for handling packet buffer.
+ */
 public class Buffer implements Buffer_IF{
 
 	private int buf;
@@ -14,15 +20,23 @@ public class Buffer implements Buffer_IF{
 		this.controller = controller;
 	}
 
+	/**
+	 * returns buffer size.
+	 */
 	public int getBuffer() {
 		return buf;
 	}
 
+	/**
+	 * Increases buffer by one and updates buffer label.
+	 */
 	public synchronized void  addBuffer() {
 		buf++;
 		updateLabel();
 	}
-	
+	/**
+	 * Decreases buffer by one and updates buffer label.
+	 */
 	public synchronized void remove() {
 		buf--;
 		updateLabel();

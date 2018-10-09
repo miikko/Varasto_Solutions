@@ -4,13 +4,21 @@ import java.io.IOException;
 
 import model.*;
 import application.GUI;
-
+/**
+ * 
+ * @author Eero
+ *
+ */
 public class MainController implements Controller {
 	
 	private GUI gui;
 	private ConnectionHandler conHandler;
 	private Buffer_IF buffer;
 	
+	/**
+	 * MainController constructor
+	 * @param gui
+	 */
 	public MainController(GUI gui) {
 		
 		this.gui = gui;
@@ -20,6 +28,9 @@ public class MainController implements Controller {
 		
 	}
 	
+	/**
+	 *Method for checking robot connection. 
+	 */
 	@Override
 	public void connectRobot() {
 		// TODO Auto-generated method stub
@@ -31,13 +42,17 @@ public class MainController implements Controller {
 		}
 	}
 
-	
+	/**
+	 *Method for adding packet into buffer. 
+	 */
 	@Override
 	public void addPacket() {
-			buffer.addBuffer();
+		buffer.addBuffer();
 	}
 	
-
+	/**
+	 *Method for updating buffer size.
+	 */
 	@Override
 	public void updateLabel(int inte) {
 		// TODO Auto-generated method stub

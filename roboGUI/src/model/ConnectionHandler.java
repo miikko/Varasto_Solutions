@@ -1,45 +1,41 @@
 package model;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-
+/**
+ * 
+ * @author Eero
+ *
+ */
 public class ConnectionHandler extends Thread{
-	private static Object lock = new Object();
-	private static final String HOST = "10.0.1.1";
-	private static final int PORT = 1111;
+	public static final String HOST = "10.0.1.1";
+	public static final int PORT = 1111;
+	
 	private boolean terminated = false;
 	private Buffer_IF buffer;
 	private boolean transferInProgress;
 	private InventoryItemDAO dao;
 	
+	/**
+	 * ConnectionHandler constructor.
+	 * Creates new DataAccessObject for InventoryItems.
+	 * @param buffer
+	 */
 	public ConnectionHandler(Buffer_IF buffer) {
 		this.buffer = buffer;
 		dao = new InventoryItemDAO();
 	}
 	
 	public void run() {
-		System.out.println("started thread");
 		while(!terminated) {
 			if(buffer.getBuffer() > 0 && !transferInProgress) {
 				transferInProgress = true;
 				System.out.println("aloittaa");
-				int[] list = dao.getNextEmptySpot();
-				DataHandler dataHandler;
-				try {
-					dataHandler = new DataHandler(new Socket(HOST,PORT), this, buffer, list);
-					dataHandler.start();
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				int[] nextEmptySlot = dao.getNextEmptySpot();
+				DataHandler dataHandler = new DataHandler(this, buffer, nextEmptySlot);
+				dataHandler.start();
 			}
 			try {
 				Thread.sleep(50);
@@ -50,14 +46,22 @@ public class ConnectionHandler extends Thread{
 		}
 	}
 	
-	//For checking if robot is running
+	/**
+	 * Method for checking connection.
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public void connect() throws UnknownHostException, IOException {	
 		Socket socket = new Socket(HOST, PORT);
 		socket.close();
 	}
 	
 	
-	
+	/**
+	 * Method for telling ConnectionHandler that transfer is ready.
+	 * Adds item in parameter into database.
+	 * @param item
+	 */
 	public void transferReady(InventoryItem item) {
 		System.out.println("valmis");
 		dao.addItem(item);

@@ -9,11 +9,19 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+/**
+ * 
+ * @author Eero
+ *
+ */
 public class InventoryItemDAO {
 
 	private SessionFactory istuntotehdas = null;
 	private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
 
+	/**
+	 * 
+	 */
 	public InventoryItemDAO() {
 
 		try {
@@ -28,6 +36,11 @@ public class InventoryItemDAO {
 
 	}
 
+	/**
+	 * Inserts item into database.
+	 * @param item
+	 * @return
+	 */
 	public boolean addItem(InventoryItem item) {
 
 		Session istunto = istuntotehdas.openSession();
@@ -52,6 +65,12 @@ public class InventoryItemDAO {
 		return true;
 	}
 
+	/**
+	 * Reads specified InventoryItem from database.
+	 * @param containerNum
+	 * @param shelfNum
+	 * @return
+	 */
 	public InventoryItem readInventoryItem(int containerNum, int shelfNum) {
 		InventoryItem[] items = readInventory();
 		for (InventoryItem item : items) {
@@ -62,6 +81,10 @@ public class InventoryItemDAO {
 		return null;
 	}
 
+	/**
+	 * Reads all items from database.
+	 * @return
+	 */
 	public InventoryItem[] readInventory() {
 
 		Session istunto = istuntotehdas.openSession();
@@ -95,6 +118,12 @@ public class InventoryItemDAO {
 		return inventory.toArray(new InventoryItem[inventory.size()]);
 	}
 
+	/**
+	 * Removes specified item from database.
+	 * @param containerNum
+	 * @param shelfNum
+	 * @return
+	 */
 	public boolean removeItem(int containerNum, int shelfNum) {
 
 		Session istunto = istuntotehdas.openSession();
@@ -132,6 +161,10 @@ public class InventoryItemDAO {
 		return onnistui;
 	}
 
+	/**
+	 * Finds next empty container and self number from database.
+	 * @return
+	 */
 	public int[] getNextEmptySpot() {
 		int[] containerShelfNums = new int[2];
 		InventoryItem[] inventory = readInventory();
@@ -163,6 +196,9 @@ public class InventoryItemDAO {
 		return containerShelfNums;
 	}
 
+	/**
+	 * Closes session factory.
+	 */
 	public void terminateSessionFactory() {
 		istuntotehdas.close();
 	}
