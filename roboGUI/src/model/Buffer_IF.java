@@ -8,7 +8,7 @@ package model;
 public interface Buffer_IF {
 	/**
 	 * Gets buffer size.
-	 * @return
+	 * @return Buffer Size.
 	 */
 	public abstract int getBuffer();
 	/**
@@ -16,7 +16,7 @@ public interface Buffer_IF {
 	 */
 	public abstract void remove();
 	/**
-	 * Increases buffer size bu one and updates buffer label.
+	 * Increases buffer size by one and updates buffer label.
 	 */
 	public abstract void addBuffer();
 }

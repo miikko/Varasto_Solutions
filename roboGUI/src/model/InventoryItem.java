@@ -49,7 +49,7 @@ public class InventoryItem {
 
 	/**
 	 * Gets item name. In this case name is color of package.
-	 * @return
+	 * @return Item color.
 	 */
 	public String getName() {
 		return name;
@@ -57,7 +57,7 @@ public class InventoryItem {
 
 	/**
 	 * Sets item name. Name is color of package.
-	 * @param color
+	 * @param color Item color.
 	 */
 	public void setName(String color) {
 		this.name = color;
@@ -65,7 +65,7 @@ public class InventoryItem {
 
 	/**
 	 * Gets shelf number of item.
-	 * @return
+	 * @return Shelf number.
 	 */
 	public int getShelfNum() {
 		return shelfNum;
@@ -73,7 +73,7 @@ public class InventoryItem {
 
 	/**
 	 * Sets shelf number of item.
-	 * @param shelfNum
+	 * @param shelfNum Shelf number.
 	 */
 	public void setShelfNum(int shelfNum) {
 		this.shelfNum = shelfNum;
@@ -81,7 +81,7 @@ public class InventoryItem {
 	
 	/**
 	 * Gets container number of item.
-	 * @return
+	 * @return Container number.
 	 */
 	public int getContainerNum() {
 		return containerNum;
@@ -89,7 +89,7 @@ public class InventoryItem {
 	
 	/**
 	 * Sets container number of item.
-	 * @param containerNum
+	 * @param containerNum Container Number
 	 */
 	public void setWP(int containerNum) {
 		this.containerNum = containerNum;

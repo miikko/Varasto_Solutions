@@ -64,7 +64,7 @@ public class ConnectionHandler extends Thread{
 	
 	/**
 	 * Inserts item into database and sets transfer progress to false.
-	 * @param item
+	 * @param item InventoryItem.
 	 */
 	public void transferReady(InventoryItem item) {
 		System.out.println("valmis");

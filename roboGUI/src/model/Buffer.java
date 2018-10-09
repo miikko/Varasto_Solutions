@@ -15,7 +15,7 @@ public class Buffer implements Buffer_IF{
 	
 	/**
 	 * Creates new buffer with buffer value of 0.
-	 * @param controller
+	 * @param controller Controller.
 	 */
 	public Buffer(Controller controller) {
 		buf= 0;
@@ -24,6 +24,7 @@ public class Buffer implements Buffer_IF{
 
 	/**
 	 * Gets buffer size.
+	 * @return Buffer size.
 	 */
 	public int getBuffer() {
 		return buf;

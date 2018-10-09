@@ -38,8 +38,8 @@ public class InventoryItemDAO {
 
 	/**
 	 * Inserts item into database.
-	 * @param item
-	 * @return
+	 * @param item Inventory item.
+	 * @return boolean
 	 */
 	public boolean addItem(InventoryItem item) {
 
@@ -67,9 +67,9 @@ public class InventoryItemDAO {
 
 	/**
 	 * Reads specified InventoryItem from database.
-	 * @param containerNum
-	 * @param shelfNum
-	 * @return
+	 * @param containerNum Container number.
+	 * @param shelfNum Shelf number.
+	 * @return InventoryItem.
 	 */
 	public InventoryItem readInventoryItem(int containerNum, int shelfNum) {
 		InventoryItem[] items = readInventory();
@@ -83,7 +83,7 @@ public class InventoryItemDAO {
 
 	/**
 	 * Reads all items from database.
-	 * @return
+	 * @return boolean
 	 */
 	public InventoryItem[] readInventory() {
 
@@ -120,9 +120,9 @@ public class InventoryItemDAO {
 
 	/**
 	 * Removes specified item from database.
-	 * @param containerNum
-	 * @param shelfNum
-	 * @return
+	 * @param containerNum Container number.
+	 * @param shelfNum Shelf number.
+	 * @return boolean
 	 */
 	public boolean removeItem(int containerNum, int shelfNum) {
 
@@ -162,8 +162,8 @@ public class InventoryItemDAO {
 	}
 
 	/**
-	 * Finds next empty container and self number from database.
-	 * @return
+	 * Finds next empty container and shelf number from database.
+	 * @return list that contains container and shelf number.
 	 */
 	public int[] getNextEmptySpot() {
 		int[] containerShelfNums = new int[2];
