@@ -48,19 +48,9 @@ public class MakeTransfer implements Behavior {
 			Waypoint temp = Connection.getNextOrder();
 			
 			connection.sendUpdate("Moving to pick up the box.");
-			navigation.executePath(temp);
+			navigation.followLine();
 		
-			// faceShelf
-			boolean leftShelf;
-			if(temp.y < -50) {
-				leftShelf = true;
-			}else {
-				leftShelf = false;
-			}
-			
-			// lift to temp height
 			lift.liftUp(Connection.orders.get(temp).get(Connection.orders.get(temp).size() - 1), false);
-			
 			
 			// move forward
 			navigation.driveStraight(true);
@@ -80,13 +70,15 @@ public class MakeTransfer implements Behavior {
 			}
 			
 			// take order to removal point
-			navigation.executePath(customerWP);
+			navigation.turnAround();
+			navigation.followLine();
+			navigation.turnAround();
 			
 			// reset lift-height
 			lift.liftDown();
 		}
-		navigation.executePath(defaultWP);
-		navigation.setPose(new Pose(0,3,0));
+		//navigation.executePath(defaultWP);
+		//navigation.setPose(new Pose(0,3,0));
 		//navigation.rotateToStartingHeading();
 		connection.sendUpdate("Finished");
 		Thread.yield();
