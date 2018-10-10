@@ -184,7 +184,7 @@ public class InventoryItemDAO {
 			
 			outerloop:
 			for (int i = 0; i < 2; i++) {
-				for (int j = 0; j < 3; j++) {
+				for (int j = 1; j < 3; j++) {
 					if (containerShelfModel[i][j] == null) {
 						containerShelfNums[0] = i;
 						containerShelfNums[1] = j;

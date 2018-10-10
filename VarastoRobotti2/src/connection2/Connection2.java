@@ -7,8 +7,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+
 
 import lejos.robotics.navigation.Waypoint;
 import navigation2.Navigation2;
@@ -21,6 +25,7 @@ public class Connection2 extends Thread {
 	public static Map<Waypoint, ArrayList<Integer>> orders = new HashMap<>();
 	private boolean terminate = false;
 	DataOutputStream out;
+	private static Object lock = new Object();
 
 	public Connection2(Navigation2 navi2) {
 		this.navi2 = navi2;
@@ -51,29 +56,37 @@ public class Connection2 extends Thread {
 
 	public static boolean noOrders() {
 		Set<Waypoint> set = orders.keySet();
-		for (Waypoint waypoint : set) {
-			if (!orders.get(waypoint).isEmpty()) {
-				return false;
+		synchronized(lock) {
+			for (Waypoint waypoint : set) {
+				if (!orders.get(waypoint).isEmpty()) {
+					return false;
+				}
 			}
 		}
+		
 		return true;
 	}
 
 	public static Waypoint getNextOrder() {
 		Set<Waypoint> set = orders.keySet();
-		for (Waypoint waypoint : set) {
-			if (!orders.get(waypoint).isEmpty()) {
-				return waypoint;
+		synchronized(lock) {
+			for (Waypoint waypoint : set) {
+				if (!orders.get(waypoint).isEmpty()) {
+					return waypoint;
+				}
 			}
 		}
 		return null;
 	}
 
 	public void makeNewOrder(Waypoint waypoint, int shelfNumber) {
-		if (orders.get(waypoint) == null) {
-			orders.put(waypoint, new ArrayList<Integer>());
+		
+		synchronized(lock) {
+			if (orders.get(waypoint) == null) {
+				orders.put(waypoint, new ArrayList<Integer>());
+			}
+			orders.get(waypoint).add(shelfNumber);
 		}
-		orders.get(waypoint).add(shelfNumber);
 	}
 
 	public void sendUpdate(String message) {
@@ -95,11 +108,11 @@ public class Connection2 extends Thread {
 		
 		switch(color) {
 			case 0:
-				colorName = "Red";
+				colorName = "Green";
 				break;
 				
 			case 1:
-				colorName = "Green";
+				colorName = "Red";
 				break;
 				
 			case 2:

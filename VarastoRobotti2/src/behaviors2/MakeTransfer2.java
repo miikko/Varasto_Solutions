@@ -4,6 +4,8 @@ import actions2.ColorSensor2;
 import actions2.Lift2;
 import connection2.Connection2;
 import connection2.Orders;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
@@ -16,16 +18,15 @@ public class MakeTransfer2 implements Behavior{
 	private Waypoint homeWP = new Waypoint(0,0);
 	private Lift2 lift2;
 	private Connection2 con2;
-	private ColorSensor2 cs;
+	private ColorSensor2 liftSensor;
 	
 	public MakeTransfer2(Navigation2 navigation2, Connection2 con2) {
 		this.con2 = con2;
 		this.navigation2 = navigation2;
-		lift2 = new Lift2();
-		lift2.liftUpShort(140);
-		cs = new ColorSensor2();
-		cs.kalibroi();
-		
+		lift2 = new Lift2();	
+		lift2.liftUp(3,false);
+		liftSensor = new ColorSensor2(new EV3ColorSensor(SensorPort.S2));
+		lift2.liftUp(0,false);
 		
 	}
 	
@@ -43,31 +44,16 @@ public class MakeTransfer2 implements Behavior{
 			
 			// saa värillisen paketin kauhaansa, checkkaa värin ja toteuttaa saadun waypointin
 			Waypoint temp = Connection2.getNextOrder();
-			//lift2.liftUpShort(140);
-			Delay.msDelay(1000);
-			con2.sendColor(cs.getVäri());
-			//con2.sendUpdate("Color: " + cs.getVäri() + "detected.");
+			//Delay.msDelay(1000);
+			con2.sendColor(liftSensor.getVäri());
 			lift2.liftDown();
-			Delay.msDelay(3000);
-			//con2.sendUpdate("Transferring packet to storage.");
-			navigation2.executePath(temp, true);
-			
-			/*
-			boolean leftShelf;
-			if(temp.x < 100) {
-				leftShelf = true;
-			}else {
-				leftShelf = false;
-			}
-			
-			navigation2.faceShelf(leftShelf);
-			*/
-			
-			lift2.liftUp(Connection2.orders.get(temp).get(Connection2.orders.get(temp).size() - 1));
+			navigation2.followLine();
+			System.out.println(Connection2.orders.get(temp).get(Connection2.orders.get(temp).size() - 1));
+			lift2.liftUp(Connection2.orders.get(temp).get(Connection2.orders.get(temp).size() - 1),false);
 			Delay.msDelay(1000);
-			navigation2.driveForward(5);
-			lift2.liftUpShort(30);
-			navigation2.driveBackward(5);
+			navigation2.driveStraight(true);
+			lift2.liftUp(1,true);
+			navigation2.driveStraight(false);
 			
 			
 			con2.sendUpdate("Packet transferred.");
@@ -80,7 +66,10 @@ public class MakeTransfer2 implements Behavior{
 			lift2.liftDown();
 		}
 		//con2.sendUpdate("Returning home.");
-		navigation2.executePath(homeWP, false);
+		navigation2.turnAround();
+		navigation2.followLine();
+		navigation2.turnAround();
+		lift2.liftUp(3, false);
 		con2.sendUpdate("Finished");
 		Thread.yield();
 		

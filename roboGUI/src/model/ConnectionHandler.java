@@ -68,8 +68,11 @@ public class ConnectionHandler extends Thread{
 	 */
 	public void transferReady(InventoryItem item) {
 		System.out.println("valmis");
-		dao.addItem(item);
-		transferInProgress = false;
+		dao.addItem(item);	
+	}
+	
+	public void setTransferInProgress(boolean state) {
+		transferInProgress = state;
 	}
 
 }

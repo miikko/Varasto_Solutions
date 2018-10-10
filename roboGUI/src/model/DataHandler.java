@@ -44,13 +44,16 @@ public class DataHandler extends Thread {
 				Waypoint wp = STORAGE_MAP.get(nextEmptySlot[0]);
 				wp.dumpObject(dos);
 				dos.writeInt(nextEmptySlot[1]);
+				System.out.println(nextEmptySlot[1]);
 				dos.flush();
 				String color = dis.readUTF();
-				System.out.println(dis.readUTF());
 				System.out.println(dis.readUTF());
 				buffer.remove();
 				InventoryItem item = new InventoryItem(color, nextEmptySlot[0], nextEmptySlot[1]);
 				connectionHandler.transferReady(item);
+				System.out.println(dis.readUTF());
+				connectionHandler.setTransferInProgress(false);
+				
 				socket.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block

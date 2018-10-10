@@ -1,90 +1,151 @@
 package navigation2;
 
+import actions2.ColorSensor2;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
+import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.*;
 import lejos.robotics.localization.PoseProvider;
-import lejos.robotics.mapping.LineMap;
 import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.*;
+import lejos.utility.Delay;
 
 public class Navigation2 {
 
-	private EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
-	private EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
+	// TODO assign correct MotorPorts
+	private EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.C);
+	private EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 
-	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.89).offset(6.6).invert(true);	
-	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.91).offset(-6.6).invert(true);
-	
-	private Chassis chassis = new WheeledChassis(new Wheel[] {leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
+	// TODO Diameters, Offsets
+	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.89).offset(6.575).invert(true);
+	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.91).offset(-6.575).invert(true);
+
+	// TODO check correct wheels
+	private Chassis chassis = new WheeledChassis(new Wheel[] { leftWheel, rightWheel },
+			WheeledChassis.TYPE_DIFFERENTIAL);
 	private MovePilot pilot = new MovePilot(chassis);
 	private PoseProvider poseProvider = chassis.getPoseProvider();
 	private Navigator navi = new Navigator(pilot, poseProvider);
-	private LineMap map = null;
-	
-	public Navigation2(Pose startPose) {
-		poseProvider.setPose(startPose);
-		//pilot.rotate(360);
-		//pilot.rotate(-360);
-		executePath(new Waypoint(32, -28, 0),false);
-		executePath(new Waypoint(0, 0, 0),false);
 
+	private ColorSensor2 leftColorSensor;
+	private ColorSensor2 rightColorSensor;
+
+	private boolean lastTurnLeft = false;
+
+	public Navigation2(ColorSensor2 leftColorSensor, ColorSensor2 rightColorSensor) {
+		this.leftColorSensor = leftColorSensor;
+		this.rightColorSensor = rightColorSensor;
+	}
+
+	public void followLine() {
+		
+		leftMotor.setAcceleration(3000);
+		rightMotor.setAcceleration(3000);
+		leftMotor.setSpeed(250);
+		rightMotor.setSpeed(250);
+		leftMotor.synchronizeWith(new RegulatedMotor[] {rightMotor});
+		
+		while (leftColorSensor.getVäri() != ColorSensor2.PUNAINEN
+				&& rightColorSensor.getVäri() != ColorSensor2.PUNAINEN) {
+
+			while (leftColorSensor.getVäri() == ColorSensor2.MUSTA && rightColorSensor.getVäri() == ColorSensor2.MUSTA) {
+				leftMotor.startSynchronization();
+				leftMotor.backward();
+				rightMotor.backward();
+				leftMotor.endSynchronization();
+			}
+			
+			leftMotor.startSynchronization();
+			leftMotor.stop();
+			rightMotor.stop();
+			leftMotor.endSynchronization();
+			
+			
+			if (leftColorSensor.getVäri() == ColorSensor2.PUNAINEN || rightColorSensor.getVäri() == ColorSensor2.PUNAINEN) {
+				System.out.println("Näki punaista");
+				break;
+			}
+			
+			double leftComparable = leftColorSensor.laskeVäri(leftColorSensor.getBlack(), leftColorSensor.getRGB());
+			double rightComparable = rightColorSensor.laskeVäri(rightColorSensor.getBlack(), rightColorSensor.getRGB());
+			if (Math.abs(leftComparable - rightComparable) > 15) {
+				if (leftComparable > rightComparable) {
+					leftMotor.backward();
+					lastTurnLeft = false;
+				} else {
+					rightMotor.backward();
+					lastTurnLeft = true;
+				}
+				Delay.msDelay(500);
+				leftMotor.startSynchronization();
+				leftMotor.stop();
+				rightMotor.stop();
+				leftMotor.endSynchronization();
+			}
+			
+			if (leftColorSensor.getVäri() == ColorSensor2.LATTIA && rightColorSensor.getVäri() == ColorSensor2.LATTIA) {
+				
+				if (lastTurnLeft) {
+					leftMotor.backward();
+				} else {
+					rightMotor.backward();
+				}
+				Delay.msDelay(500);
+			}
+		}
+		System.out.println("End of the line.");
 	}
 	
-	public void executePath(Waypoint targetWaypoint, boolean store) {
-		Pose pose = poseProvider.getPose();
-		navi.followPath(findPath(pose, targetWaypoint, store));
-		navi.waitForStop();
-		navi.clearPath();
+	public void turnAround() {
+		pilot.setAngularAcceleration(30);
+		pilot.setAngularSpeed(90);
+		pilot.rotate(180);
 	}
-	
+
 	public Pose getPose() {
 		return poseProvider.getPose();
 	}
-	
-	public void setLineMap(LineMap map) {
-		this.map = map;
-	}
-	
-	private Path findPath(Pose pose, Waypoint targetWaypoint, boolean store) {
+
+	// TODO requires testing
+	private Path findPath(Pose pose, Waypoint targetWaypoint) {
 		Waypoint wp = null;
 		Path path = new Path();
-		/*
-		if(store) {
-			wp = new Waypoint(pose.getX(), targetWaypoint.getY());
-		} else {
-			wp = new Waypoint(targetWaypoint.getX(), pose.getY());
-		}
-		*/
-		//path.add(wp);
+
+		wp = new Waypoint(pose.getX(), pose.getY());
+
+		path.add(wp);
 		path.add(targetWaypoint);
 		return path;
 	}
-	
-	public void rotateAngle(int angle) {
-		pilot.rotate(angle);
+
+	public void driveStraight(boolean forward) {
+		if (forward) {
+			pilot.travel(9.5);
+		} else {
+			pilot.travel(-9.5);
+		}
 		pilot.stop();
 	}
-	
-	public void driveForward(int distance) {
-		pilot.travel(distance);
-		pilot.stop();
-	}
-	
-	public void driveBackward(int distance) {
-		pilot.travel(-distance);
-		pilot.stop();
-	}
-	
+
 	public void faceShelf(boolean leftShelf) {
 		Pose currentPose = chassis.getPoseProvider().getPose();
-		System.out.println(currentPose.getHeading());
 		int amount;
-		if(!leftShelf) {
-			amount = 90;
-		}else {
-			amount = -90;
+		if (!leftShelf) {
+			amount = 0;
+		} else {
+			amount = 0;
 		}
 		pilot.rotate(amount - currentPose.getHeading(), false);
 	}
+
+	public void rotateToStartingHeading() {
+		Pose currentPose = chassis.getPoseProvider().getPose();
+		float currentHeading = currentPose.getHeading();
+		pilot.rotate(currentHeading - currentHeading);
+	}
+
+	public void setPose(Pose pose) {
+		poseProvider.setPose(pose);
+	}
 }
+
