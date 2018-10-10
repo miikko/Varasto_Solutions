@@ -3,10 +3,12 @@ package navigation;
 import actions.ColorSensor;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
+import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.*;
 import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.*;
+import lejos.utility.Delay;
 
 public class Navigation {
 
@@ -28,7 +30,7 @@ public class Navigation {
 	private ColorSensor leftColorSensor;
 	private ColorSensor rightColorSensor;
 
-	private Pose startPose;
+	private boolean lastTurnLeft = false;
 
 	public Navigation(ColorSensor leftColorSensor, ColorSensor rightColorSensor) {
 		this.leftColorSensor = leftColorSensor;
@@ -37,25 +39,66 @@ public class Navigation {
 
 	public void followLine() {
 		
+		leftMotor.setAcceleration(3000);
+		rightMotor.setAcceleration(3000);
+		leftMotor.setSpeed(250);
+		rightMotor.setSpeed(250);
+		leftMotor.synchronizeWith(new RegulatedMotor[] {rightMotor});
+		
 		while (leftColorSensor.getVäri() != ColorSensor.PUNAINEN
 				&& rightColorSensor.getVäri() != ColorSensor.PUNAINEN) {
 
 			while (leftColorSensor.getVäri() == ColorSensor.MUSTA && rightColorSensor.getVäri() == ColorSensor.MUSTA) {
-				pilot.forward();
+				leftMotor.startSynchronization();
+				leftMotor.backward();
+				rightMotor.backward();
+				leftMotor.endSynchronization();
 			}
 			
-			while (leftColorSensor.getVäri() == ColorSensor.LATTIA) {
-				pilot.rotate(10);
+			leftMotor.startSynchronization();
+			leftMotor.stop();
+			rightMotor.stop();
+			leftMotor.endSynchronization();
+			
+			
+			if (leftColorSensor.getVäri() == ColorSensor.PUNAINEN || rightColorSensor.getVäri() == ColorSensor.PUNAINEN) {
+				System.out.println("Näki punaista");
+				break;
 			}
 			
-			while (rightColorSensor.getVäri() == ColorSensor.LATTIA) {
-				pilot.rotate(-10);
+			double leftComparable = leftColorSensor.laskeVäri(leftColorSensor.getBlack(), leftColorSensor.getRGB());
+			double rightComparable = rightColorSensor.laskeVäri(rightColorSensor.getBlack(), rightColorSensor.getRGB());
+			if (Math.abs(leftComparable - rightComparable) > 15) {
+				if (leftComparable > rightComparable) {
+					leftMotor.backward();
+					lastTurnLeft = false;
+				} else {
+					rightMotor.backward();
+					lastTurnLeft = true;
+				}
+				Delay.msDelay(500);
+				leftMotor.startSynchronization();
+				leftMotor.stop();
+				rightMotor.stop();
+				leftMotor.endSynchronization();
+			}
+			
+			if (leftColorSensor.getVäri() == ColorSensor.LATTIA && rightColorSensor.getVäri() == ColorSensor.LATTIA) {
+				
+				if (lastTurnLeft) {
+					leftMotor.backward();
+				} else {
+					rightMotor.backward();
+				}
+				Delay.msDelay(500);
 			}
 		}
 		System.out.println("End of the line.");
 	}
 	
 	public void turnAround() {
+		pilot.setAngularAcceleration(30);
+		pilot.setAngularSpeed(90);
 		pilot.rotate(180);
 	}
 

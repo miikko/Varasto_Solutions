@@ -15,11 +15,12 @@ public class Main {
 		
 		ColorSensor leftColorSensor = new ColorSensor(new EV3ColorSensor(SensorPort.S3));
 		ColorSensor rightColorSensor = new ColorSensor(new EV3ColorSensor(SensorPort.S4));
+		ColorSensor liftSensor = new ColorSensor(new EV3ColorSensor(SensorPort.S2));
 		Navigation navi = new Navigation(leftColorSensor, rightColorSensor);
 		Connection connection = new Connection();
 		connection.start();
 		Behavior idle = new Idle();
-		Behavior makeTransfer = new MakeTransfer(navi, connection);
+		Behavior makeTransfer = new MakeTransfer(navi, connection, liftSensor);
 		Behavior[] bArray = {idle, makeTransfer };
 		Arbitrator arby = new Arbitrator(bArray);
 		arby.go();

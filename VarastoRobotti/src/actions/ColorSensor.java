@@ -17,12 +17,15 @@ public class ColorSensor {
 	private int black[] = new int[3];
 	private int red[] = new int[3];
 	private int floor[] = new int[3];
+	private int colorID;
 
 	public ColorSensor(EV3ColorSensor navSensor) {
 		this.navSensor = navSensor;
 		sampleProvider = navSensor.getRGBMode();
 		sample = new float[sampleProvider.sampleSize()];
-		kalibroi();
+		if (objectCounter < 2) {
+			kalibroi();
+		}
 		objectCounter++;
 	}
 
@@ -78,14 +81,9 @@ public class ColorSensor {
 	}
 
 	public int getVäri() {
-		int rgb[] = new int[3];
+		
+		int rgb[] = getRGB();
 		double väri[] = new double[5];
-
-		sampleProvider.fetchSample(sample, 0);
-
-		for (int i = 0; i < 3; i++) {
-			rgb[i] = Math.round(sample[i] * 765);
-		}
 
 		väri[PUNAINEN] = laskeVäri(red, rgb);
 		väri[MUSTA] = laskeVäri(black, rgb);
@@ -104,7 +102,7 @@ public class ColorSensor {
 		return lähinVäri;
 	}
 
-	private double laskeVäri(int referenssiVäri[], int väri[]) {
+	public double laskeVäri(int referenssiVäri[], int väri[]) {
 
 		double tulos = 0;
 		int calc[] = new int[3];
@@ -125,6 +123,54 @@ public class ColorSensor {
 		LCD.drawString("" + tulos, 0, 6);
 
 		return tulos;
+	}
+	
+	public void setColorID() {
+		colorID = navSensor.getColorID();
+	}
+	
+	public boolean itemInCrane() {
+		if (colorID == navSensor.getColorID()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public int[] getRGB () {
+		
+		int rgb[] = new int[3];
+
+		sampleProvider.fetchSample(sample, 0);
+
+		for (int i = 0; i < 3; i++) {
+			rgb[i] = Math.round(sample[i] * 765);
+		}
+		
+		return rgb;
+	}
+
+	public int[] getBlack() {
+		return black;
+	}
+
+	public void setBlack(int[] black) {
+		this.black = black;
+	}
+
+	public int[] getRed() {
+		return red;
+	}
+
+	public void setRed(int[] red) {
+		this.red = red;
+	}
+
+	public int[] getFloor() {
+		return floor;
+	}
+
+	public void setFloor(int[] floor) {
+		this.floor = floor;
 	}
 
 }

@@ -1,7 +1,9 @@
 package behaviors;
 
+import actions.ColorSensor;
 import actions.Lift;
 import connection.Connection;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.navigation.Pose;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Behavior;
@@ -18,13 +20,15 @@ public class MakeTransfer implements Behavior {
 	private Connection connection;
 	private final Waypoint customerWP = new Waypoint(10,-50);
 	private final Waypoint defaultWP = new Waypoint(0,0,0);
+	private ColorSensor liftSensor;
 	
 	/**
 	 * A constructor with Navigation and Connection parameters.
 	 */
-	public MakeTransfer(Navigation navigation, Connection connection) {
+	public MakeTransfer(Navigation navigation, Connection connection, ColorSensor liftSensor) {
 		this.navigation = navigation;
 		this.connection = connection;
+		this.liftSensor = liftSensor;
 	}
 	
 	/**
@@ -71,15 +75,17 @@ public class MakeTransfer implements Behavior {
 			
 			// take order to removal point
 			navigation.turnAround();
+			liftSensor.setColorID();
 			navigation.followLine();
+			while (liftSensor.itemInCrane()) {
+				
+			}
 			navigation.turnAround();
 			
 			// reset lift-height
 			lift.liftDown();
 		}
-		//navigation.executePath(defaultWP);
-		//navigation.setPose(new Pose(0,3,0));
-		//navigation.rotateToStartingHeading();
+		
 		connection.sendUpdate("Finished");
 		Thread.yield();
 			
