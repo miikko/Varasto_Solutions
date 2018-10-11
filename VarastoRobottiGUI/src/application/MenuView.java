@@ -28,6 +28,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+/**
+ * This class is responsible of creating and displaying the graphical user interface(GUI).
+ * @author Miikka Oksanen
+ *
+ */
 
 public class MenuView extends Application implements MenuView_IF {
 
@@ -48,11 +53,17 @@ public class MenuView extends Application implements MenuView_IF {
 
 	private GridPane centerGrid;
 
+	/**
+	 * This method is executed first when the program starts. It instantiates some objects that are needed later on in the program execution.
+	 */
 	public void init() {
 		controller = new MenuController(this);
 		catalogObsList = controller.initializeCatalog();
 	}
 
+	/**
+	 * Calls the methods that build the GUI.
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -201,7 +212,8 @@ public class MenuView extends Application implements MenuView_IF {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				controller.initializeCatalog();
+				catalogObsList = controller.initializeCatalog();
+				catalogListView.setItems(catalogObsList);
 			}
 			
 		});
