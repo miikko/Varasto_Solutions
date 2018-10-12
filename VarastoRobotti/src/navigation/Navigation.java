@@ -25,7 +25,6 @@ public class Navigation {
 			WheeledChassis.TYPE_DIFFERENTIAL);
 	private MovePilot pilot = new MovePilot(chassis);
 	private PoseProvider poseProvider = chassis.getPoseProvider();
-	private Navigator navi = new Navigator(pilot, poseProvider);
 
 	private ColorSensor leftColorSensor;
 	private ColorSensor rightColorSensor;
@@ -102,21 +101,6 @@ public class Navigation {
 		pilot.rotate(180);
 	}
 
-	public Pose getPose() {
-		return poseProvider.getPose();
-	}
-
-	// TODO requires testing
-	private Path findPath(Pose pose, Waypoint targetWaypoint) {
-		Waypoint wp = null;
-		Path path = new Path();
-
-		wp = new Waypoint(pose.getX(), pose.getY());
-
-		path.add(wp);
-		path.add(targetWaypoint);
-		return path;
-	}
 
 	public void driveStraight(boolean forward) {
 		if (forward) {
@@ -127,16 +111,6 @@ public class Navigation {
 		pilot.stop();
 	}
 
-	public void faceShelf(boolean leftShelf) {
-		Pose currentPose = chassis.getPoseProvider().getPose();
-		int amount;
-		if (!leftShelf) {
-			amount = 0;
-		} else {
-			amount = 0;
-		}
-		pilot.rotate(amount - currentPose.getHeading(), false);
-	}
 
 	public void rotateToStartingHeading() {
 		Pose currentPose = chassis.getPoseProvider().getPose();
@@ -144,7 +118,4 @@ public class Navigation {
 		pilot.rotate(currentHeading - currentHeading);
 	}
 
-	public void setPose(Pose pose) {
-		poseProvider.setPose(pose);
-	}
 }

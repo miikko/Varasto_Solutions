@@ -3,7 +3,7 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 /**
  * This class is used for initialising and controlling the lift motor.
- * @author 
+ * @author Arttu Halonen
  *
  */
 public class Lift {

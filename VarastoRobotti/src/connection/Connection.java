@@ -13,7 +13,7 @@ import lejos.robotics.navigation.Waypoint;
 import navigation.Navigation;
 /**
  * This class handles the connection between EV3 and PC in a thread and saves the received orders into a HashMap.
- * @author 
+ * @author Arttu Halonen
  *
  */
 public class Connection extends Thread{

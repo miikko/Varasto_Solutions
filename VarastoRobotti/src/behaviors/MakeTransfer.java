@@ -10,7 +10,7 @@ import lejos.robotics.subsumption.Behavior;
 import navigation.Navigation;
 /**
  * This class contains the behavior for retrieving an order and taking it to the customer.
- * @author 
+ * @author Arttu Halonen
  *
  */
 public class MakeTransfer implements Behavior {
