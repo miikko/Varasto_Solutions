@@ -17,6 +17,11 @@ import java.util.Set;
 import lejos.robotics.navigation.Waypoint;
 import navigation2.Navigation2;
 
+/**
+ * Class used to communicate between robot and the user interface.
+ * @author JP
+ *
+ */
 public class Connection2 extends Thread {
 
 	private ServerSocket server;
@@ -54,6 +59,10 @@ public class Connection2 extends Thread {
 		terminate = true;
 	}
 
+	/**
+	 * if robot has no orders this method returns true, else false.
+	 * @return
+	 */
 	public static boolean noOrders() {
 		Set<Waypoint> set = orders.keySet();
 		synchronized(lock) {
@@ -67,6 +76,10 @@ public class Connection2 extends Thread {
 		return true;
 	}
 
+	/**
+	 * retrieves next available order for the robot.
+	 * @return
+	 */
 	public static Waypoint getNextOrder() {
 		Set<Waypoint> set = orders.keySet();
 		synchronized(lock) {
@@ -79,6 +92,11 @@ public class Connection2 extends Thread {
 		return null;
 	}
 
+	/**
+	 * To create a new order for the robot.
+	 * @param waypoint
+	 * @param shelfNumber
+	 */
 	public void makeNewOrder(Waypoint waypoint, int shelfNumber) {
 		
 		synchronized(lock) {
@@ -89,6 +107,10 @@ public class Connection2 extends Thread {
 		}
 	}
 
+	/**
+	 * Informs the controllers the current task of the robot.
+	 * @param message
+	 */
 	public void sendUpdate(String message) {
 
 		try {
@@ -103,6 +125,10 @@ public class Connection2 extends Thread {
 
 	}
 	
+	/**
+	 * Informs the controller which color was detected
+	 * @param color
+	 */
 	public void sendColor(int color) {
 		String colorName = null;
 		

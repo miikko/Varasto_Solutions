@@ -5,6 +5,11 @@ import connection2.Orders;
 import lejos.robotics.subsumption.Behavior;
 import navigation2.Navigation2;
 
+/**
+ * Behavior class which keeps the robot idle.
+ * @author JP
+ *
+ */
 public class Idle2 implements Behavior{
 
 	private MakeTransfer2 mt2;
@@ -21,11 +26,17 @@ public class Idle2 implements Behavior{
 	}
 	
 	@Override
+	/**
+	 * When robot has no orders it goes to dormant state.
+	 */
 	public boolean takeControl() {
 		return Connection2.noOrders();
 	}
 
 	@Override
+	/**
+	 * keeps the robot at dormant state when no orders are given.
+	 */
 	public void action() {
 		suppressed = false;
 

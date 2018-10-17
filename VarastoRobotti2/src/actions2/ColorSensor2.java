@@ -7,6 +7,12 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
+/**
+ * Class which is used to calibrate colorsensors and check the colors.
+ * @author JP
+ *
+ */
+
 public class ColorSensor2 {
 	private EV3ColorSensor navSensor;
 	private SampleProvider sampleProvider;
@@ -19,6 +25,11 @@ public class ColorSensor2 {
 	private int floor[] = new int[3];
 	private int colorID;
 
+	/**
+	 * Calibrates the colorsensor when created
+	 * each sensor is calibrated
+	 * @param navSensor
+	 */
 	public ColorSensor2(EV3ColorSensor navSensor) {
 		this.navSensor = navSensor;
 		sampleProvider = navSensor.getRGBMode();
@@ -29,6 +40,9 @@ public class ColorSensor2 {
 		objectCounter++;
 	}
 
+	/**
+	 * Calibrates the colorsensor and 2 linefollowing colorsensors.
+	 */
 	private void kalibroi() {
 
 		String tunniste;
@@ -80,6 +94,10 @@ public class ColorSensor2 {
 		LCD.clear();
 	}
 
+	/**
+	 * Used to check the current color in front of the colorsensors
+	 * @return
+	 */
 	public int getVäri() {
 		
 		int rgb[] = getRGB();
@@ -102,6 +120,12 @@ public class ColorSensor2 {
 		return lähinVäri;
 	}
 
+	/**
+	 * Calculates the colors values using rgb values.
+	 * @param referenssiVäri
+	 * @param väri
+	 * @return
+	 */
 	public double laskeVäri(int referenssiVäri[], int väri[]) {
 
 		double tulos = 0;
