@@ -3,7 +3,7 @@ package model;
 import javax.persistence.*;
 
 /**
- * ORM class for inventory items.
+ * This class is used to persist the objects related to InventoryItem table in database.
  * 
  * @author Eero
  * 

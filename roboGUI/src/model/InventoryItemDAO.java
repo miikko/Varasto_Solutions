@@ -10,7 +10,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
- * ORM DataAccessObject
+ * Data access object for InventoryItem objects.
  * @author Eero
  *
  */

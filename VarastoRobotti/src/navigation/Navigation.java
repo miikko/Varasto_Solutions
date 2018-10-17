@@ -9,18 +9,19 @@ import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.*;
 import lejos.utility.Delay;
-
+/**
+ * This class is used to control motors with Chassis and MovePilot.
+ * @author Eero
+ *
+ */
 public class Navigation {
 
-	// TODO assign correct MotorPorts
 	private EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.C);
 	private EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 
-	// TODO Diameters, Offsets
 	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.89).offset(6.575).invert(true);
 	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.91).offset(-6.575).invert(true);
-
-	// TODO check correct wheels
+	
 	private Chassis chassis = new WheeledChassis(new Wheel[] { leftWheel, rightWheel },
 			WheeledChassis.TYPE_DIFFERENTIAL);
 	private MovePilot pilot = new MovePilot(chassis);
@@ -31,11 +32,18 @@ public class Navigation {
 
 	private boolean lastTurnLeft = false;
 
+	/**
+	 * Constructor with sensor objects as parameters.
+	 * @param leftColorSensor EV3ColorSensor
+	 * @param rightColorSensor EV3ColorSensor
+	 */
 	public Navigation(ColorSensor leftColorSensor, ColorSensor rightColorSensor) {
 		this.leftColorSensor = leftColorSensor;
 		this.rightColorSensor = rightColorSensor;
 	}
-
+	/**
+	 * Sets robot to follow black lines until it reaches end of lines marked as red.
+	 */
 	public void followLine() {
 		
 		leftMotor.setAcceleration(3000);
@@ -94,7 +102,9 @@ public class Navigation {
 		}
 		System.out.println("End of the line.");
 	}
-	
+	/**
+	 * Rotates the robot 180 degrees.
+	 */
 	public void turnAround() {
 		pilot.setAngularAcceleration(30);
 		pilot.setAngularSpeed(90);
@@ -102,6 +112,12 @@ public class Navigation {
 	}
 
 
+	/**
+	 * Sets robot to travel forward or backward a specific distance.
+	 * Used for package pickup.
+	 * 
+	 * @param forward boolean, set false for backward movement.
+	 */
 	public void driveStraight(boolean forward) {
 		if (forward) {
 			pilot.travel(9.5);
@@ -112,6 +128,9 @@ public class Navigation {
 	}
 
 
+	/**
+	 * Rotates robot to start heading by using chassis PoseProvider.
+	 */
 	public void rotateToStartingHeading() {
 		Pose currentPose = chassis.getPoseProvider().getPose();
 		float currentHeading = currentPose.getHeading();
