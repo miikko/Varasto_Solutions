@@ -6,6 +6,11 @@ import connection.Connection;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Behavior;
 
+/**
+ * Behavior class that keeps robot idle when there are no orders.
+ * @author Eero
+ *
+ */
 public class Idle implements Behavior {
 
 	private volatile boolean suppressed = false;

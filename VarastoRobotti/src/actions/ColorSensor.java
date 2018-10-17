@@ -6,7 +6,11 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
-
+/**
+ * This class is used to handle color sensors.
+ * @author Eero
+ *
+ */
 public class ColorSensor {
 	private EV3ColorSensor navSensor;
 	private SampleProvider sampleProvider;
@@ -19,6 +23,10 @@ public class ColorSensor {
 	private int floor[] = new int[3];
 	private int colorID;
 
+	/**
+	 * Constructor that calibrates colors when called.
+	 * @param navSensor EV3Sensor
+	 */
 	public ColorSensor(EV3ColorSensor navSensor) {
 		this.navSensor = navSensor;
 		sampleProvider = navSensor.getRGBMode();
@@ -29,6 +37,9 @@ public class ColorSensor {
 		objectCounter++;
 	}
 
+	/**
+	 * Calibrates the sensor by reading reference values for each color.
+	 */
 	private void kalibroi() {
 
 		String tunniste;
@@ -80,6 +91,11 @@ public class ColorSensor {
 		LCD.clear();
 	}
 
+	/**
+	 * Compares detected color with reference colors and finds the closest color.
+	 * 
+	 * @return Detected color as integer. RED = 0, BLACK = 1, FLOOR = 2.
+	 */
 	public int getVäri() {
 		
 		int rgb[] = getRGB();
@@ -102,6 +118,12 @@ public class ColorSensor {
 		return lähinVäri;
 	}
 
+	/**
+	 * Calculates channel differences for specific color.
+	 * @param referenssiVäri Reference color that is stored in calibration.
+	 * @param väri Detected color.
+	 * @return Result of calculated channel differences. The lower the calculated value the closer it is to the reference color.
+	 */
 	public double laskeVäri(int referenssiVäri[], int väri[]) {
 
 		double tulos = 0;
@@ -124,18 +146,26 @@ public class ColorSensor {
 
 		return tulos;
 	}
-	
+	/**
+	 * Sets colorID
+	 */
 	public void setColorID() {
 		colorID = navSensor.getColorID();
 	}
-	
+	/**
+	 * Checks if the set color box is still in the crane.
+	 * @return
+	 */
 	public boolean itemInCrane() {
 		if (colorID == navSensor.getColorID()) {
 			return true;
 		}
 		return false;
 	}
-	
+	/**
+	 * Fetches RBG values.
+	 * @return List of RBG values.
+	 */
 	public int[] getRGB () {
 		
 		int rgb[] = new int[3];
