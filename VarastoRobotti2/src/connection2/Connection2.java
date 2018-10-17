@@ -36,6 +36,7 @@ public class Connection2 extends Thread {
 		this.navi2 = navi2;
 	}
 
+	@Override
 	public void run() {
 		try {
 			server = new ServerSocket(1111);
@@ -50,7 +51,6 @@ public class Connection2 extends Thread {
 				makeNewOrder(wp, shelfNumber);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

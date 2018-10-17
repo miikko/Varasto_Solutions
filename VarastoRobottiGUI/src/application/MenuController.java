@@ -7,6 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lejos.robotics.navigation.Waypoint;
 
+/**
+ * This class connects the MenuView- and the MenuCommunicationModel-class.
+ * It calls the Model's methods based on the information it gets from the View.
+ * @author Miikka Oksanen
+ *
+ */
 public class MenuController {
 
 	private InventoryItemDAO dao;
@@ -15,6 +21,10 @@ public class MenuController {
 	private final Waypoint[] SHELFCOORDINATES = new Waypoint[] { new Waypoint(32, -28,0), new Waypoint(63, -70,0) };
 	private ObservableList<String> catalog;
 
+	/**
+	 * Constructor
+	 * @param view
+	 */
 	public MenuController(MenuView view) {
 		this.view = view;
 		dao = new InventoryItemDAO();
@@ -23,6 +33,12 @@ public class MenuController {
 		commModel.start();
 	}
 
+	/**
+	 * Gets the chosen item's location from the database and sends it forward to the commModel.
+	 * Finally removes the item from the database.
+	 * @param itemName
+	 * @param itemCount
+	 */
 	public void startDelivery(String itemName, int itemCount) {
 		int temp = itemCount;
 		while (temp > 0) {
@@ -51,6 +67,10 @@ public class MenuController {
 		updateQuantity(itemName);
 	}
 
+	/**
+	 * Creates the catalog-ObservableList based on database information.
+	 * @return the catalog-ObservableList that is filled based on the database information.
+	 */
 	public ObservableList<String> initializeCatalog() {
 		InventoryItem[] inventory = dao.readInventory();
 		List<String> items = new ArrayList<String>();
@@ -68,6 +88,11 @@ public class MenuController {
 		return catalog;
 	}
 
+	/**
+	 * Updates the quantity-ListView based on the given parameter.
+	 * This is done by checking the quantity from the database.
+	 * @param itemName
+	 */
 	public void updateQuantity(String itemName) {
 		InventoryItem[] inventory = dao.readInventory();
 		int quantity = 0;
@@ -91,6 +116,10 @@ public class MenuController {
 		}
 	}
 
+	/**
+	 * Connects to the robot and updates the GUI to the main screen.
+	 * Prints a dialog upon failure.
+	 */
 	public void connectRobot() {
 		try {
 			commModel.connect();
@@ -100,6 +129,9 @@ public class MenuController {
 		}
 	}
 
+	/**
+	 * Closes the connection with the database.
+	 */
 	public void terminateSessionFactory() {
 		dao.terminateSessionFactory();
 	}

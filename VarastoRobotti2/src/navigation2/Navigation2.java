@@ -10,17 +10,21 @@ import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.*;
 import lejos.utility.Delay;
 
+/**
+ * This class is creates the Motor-objects and uses them in its methods.
+ * It provides methods for the robot to move 
+ * The wheel values need to be modified if the robot is not built using our instructions.
+ * @author Miikka Oksanen
+ *
+ */
 public class Navigation2 {
 
-	// TODO assign correct MotorPorts
 	private EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.C);
 	private EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 
-	// TODO Diameters, Offsets
 	private Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 1.89).offset(6.575).invert(true);
 	private Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 1.91).offset(-6.575).invert(true);
 
-	// TODO check correct wheels
 	private Chassis chassis = new WheeledChassis(new Wheel[] { leftWheel, rightWheel },
 			WheeledChassis.TYPE_DIFFERENTIAL);
 	private MovePilot pilot = new MovePilot(chassis);
@@ -37,6 +41,10 @@ public class Navigation2 {
 		this.rightColorSensor = rightColorSensor;
 	}
 
+	/**
+	 * This method tells the robot to keep its 2 navigation color sensors on black while moving forward.
+	 * It stops the motors when the navigation sensors detect red.
+	 */
 	public void followLine() {
 		
 		leftMotor.setAcceleration(3000);
@@ -96,17 +104,29 @@ public class Navigation2 {
 		System.out.println("End of the line.");
 	}
 	
+	/**
+	 * Rotates the robot 180 degrees.
+	 */
 	public void turnAround() {
 		pilot.setAngularAcceleration(30);
 		pilot.setAngularSpeed(90);
 		pilot.rotate(180);
 	}
 
+	/**
+	 * Getter
+	 * @return the robots current Pose.
+	 */
 	public Pose getPose() {
 		return poseProvider.getPose();
 	}
 
-	// TODO requires testing
+	/**
+	 * Finds and returns a path between the given targetWaypoint and the robot's current Pose.
+	 * @param pose
+	 * @param targetWaypoint
+	 * @return a path between the given targetWaypoint and the robot's current Pose.
+	 */
 	private Path findPath(Pose pose, Waypoint targetWaypoint) {
 		Waypoint wp = null;
 		Path path = new Path();
@@ -118,6 +138,10 @@ public class Navigation2 {
 		return path;
 	}
 
+	/**
+	 * Tells the robot to move forward/backward for a certain distance. The direction depends on the parameter.
+	 * @param forward
+	 */
 	public void driveStraight(boolean forward) {
 		if (forward) {
 			pilot.travel(9.5);
@@ -127,6 +151,11 @@ public class Navigation2 {
 		pilot.stop();
 	}
 
+	/**
+	 * Rotates the robot so that its lifting crane is facing a shelf.
+	 * This method presumes that the shelfs are facing the same direction as the robot's starting direction.
+	 * @param leftShelf
+	 */
 	public void faceShelf(boolean leftShelf) {
 		Pose currentPose = chassis.getPoseProvider().getPose();
 		int amount;
@@ -138,12 +167,19 @@ public class Navigation2 {
 		pilot.rotate(amount - currentPose.getHeading(), false);
 	}
 
+	/**
+	 * Rotates the robot so that it is facing the same direction that it faced when the program started.
+	 */
 	public void rotateToStartingHeading() {
 		Pose currentPose = chassis.getPoseProvider().getPose();
 		float currentHeading = currentPose.getHeading();
 		pilot.rotate(currentHeading - currentHeading);
 	}
 
+	/**
+	 * Setter
+	 * @param pose
+	 */
 	public void setPose(Pose pose) {
 		poseProvider.setPose(pose);
 	}

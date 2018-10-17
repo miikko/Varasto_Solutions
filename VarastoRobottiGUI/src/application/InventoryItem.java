@@ -2,6 +2,12 @@ package application;
 
 import javax.persistence.*;
 
+/**
+ * This class simulates the objects that the robots are carrying.
+ * It also contains annotations that are required for Hibernate compability.
+ * @author Miikka Oksanen
+ *
+ */
 
 @Entity
 @Table(name="InventoryItem")

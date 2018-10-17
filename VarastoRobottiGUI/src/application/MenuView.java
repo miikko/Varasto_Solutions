@@ -30,7 +30,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 /**
  * This class is responsible of creating and displaying the graphical user interface(GUI).
- * @author Miikka Oksanen
+ * @author Miikka Oksanen & Eero Tuure
  *
  */
 
@@ -61,9 +61,7 @@ public class MenuView extends Application implements MenuView_IF {
 		catalogObsList = controller.initializeCatalog();
 	}
 
-	/**
-	 * Calls the methods that build the GUI.
-	 */
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -82,10 +80,15 @@ public class MenuView extends Application implements MenuView_IF {
 		}
 	}
 
+	/**
+	 * Launches the application by calling the launch()-method.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	
 	@Override
 	public void updateFeed(String message) {
 		updateFeedLbl.setText(message);
@@ -106,7 +109,6 @@ public class MenuView extends Application implements MenuView_IF {
 		deliveryStatusLbl.setText(message);
 	}
 
-	// Method for exception popup window
 	@Override
 	public void popExceptionAlert(String headerText, String contentText, Exception e) {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -144,13 +146,15 @@ public class MenuView extends Application implements MenuView_IF {
 
 	@Override
 	public void setConnected() {
-		// TODO Auto-generated method stub
 		borderPane.setCenter(centerGrid);
 		createLeftBoxConnected();
 		borderPane.setLeft(leftBoxConnected);
 	}
 
-	// LeftBox of BorderPane when not Conneted
+	/**
+	 * Creates the left-side of the GUI. 
+	 * This should be called before the connecting to the robot.
+	 */
 	private void createLeftBox() {
 		leftBox = new VBox();
 		leftBox.getStyleClass().add("leftBox");
@@ -159,7 +163,6 @@ public class MenuView extends Application implements MenuView_IF {
 
 			@Override
 			public void handle(ActionEvent e) {
-				// TODO Auto-generated method stub
 				controller.connectRobot();
 			}
 
@@ -167,7 +170,10 @@ public class MenuView extends Application implements MenuView_IF {
 		leftBox.getChildren().addAll(leftBoxButton);
 	}
 
-	// LeftBox of BorderPane when Connected
+	/**
+	 * Creates the left-side of the GUI. 
+	 * This should be called after the connecting to the robot.
+	 */
 	private void createLeftBoxConnected() {
 		leftBoxConnected = new VBox();
 		leftBoxConnected.getStyleClass().add("leftBox");
@@ -175,7 +181,9 @@ public class MenuView extends Application implements MenuView_IF {
 		leftBoxConnected.getChildren().add(label);
 	}
 
-	// MainGrid of view, Center of BorderPane
+	/**
+	 * Creates the main content of the GUI that is located in the center.
+	 */
 	private void createMainGrid() {
 		catalogListView = new ListView<String>(catalogObsList);
 		catalogListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -237,10 +245,17 @@ public class MenuView extends Application implements MenuView_IF {
 		centerGrid.add(updateFeedLbl, 3, 0);
 	}
 	
+	/**
+	 * Removes an entry specified by name from the ObservableList that is connected to the catalog-ListView.
+	 * @param itemName
+	 */
 	public void removeItemFromCatalog(String itemName) {
 		catalogObsList.remove(itemName);
 	}
 	
+	/**
+	 * Empties the ObservableList that is connected to the quantity-ListView.
+	 */
 	public void flushQuantityList() {
 		quantityObsList.clear();
 	}

@@ -1,10 +1,19 @@
 package application;
 
+/**
+ * Thread for handling the confirm-button.
+ * @author Miikka Oksanen
+ *
+ */
 public class ConfirmBtnThread extends Thread {
 
 	private MenuView view;
 	private boolean quit;
 
+	/**
+	 * Constructor.
+	 * @param view
+	 */
 	public ConfirmBtnThread(MenuView view) {
 		this.view = view;
 		setDaemon(true);
@@ -25,13 +34,15 @@ public class ConfirmBtnThread extends Thread {
 				try {
 					sleep(50);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Terminates the thread.
+	 */
 	public void terminate() {
 		quit = true;
 	}

@@ -11,6 +11,12 @@ import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import navigation2.Navigation2;
 
+/**
+ * This Behavior-class contains instructions for the robot to deliver packets to the shelves.
+ * It is coded based on the Behavior programming instructions.
+ * @author Miikka Oksanen 
+ *
+ */
 public class MakeTransfer2 implements Behavior{
 
 	private volatile boolean suppressed = false;
@@ -32,7 +38,6 @@ public class MakeTransfer2 implements Behavior{
 	
 	@Override
 	public boolean takeControl() {
-		// TODO Auto-generated method stub
 		return (!Connection2.noOrders());
 	}
 
@@ -44,7 +49,7 @@ public class MakeTransfer2 implements Behavior{
 			
 			// saa värillisen paketin kauhaansa, checkkaa värin ja toteuttaa saadun waypointin
 			Waypoint temp = Connection2.getNextOrder();
-			//Delay.msDelay(1000);
+			
 			con2.sendColor(liftSensor.getVäri());
 			lift2.liftDown();
 			navigation2.followLine();
@@ -65,7 +70,7 @@ public class MakeTransfer2 implements Behavior{
 			
 			lift2.liftDown();
 		}
-		//con2.sendUpdate("Returning home.");
+		
 		navigation2.turnAround();
 		navigation2.followLine();
 		navigation2.turnAround();

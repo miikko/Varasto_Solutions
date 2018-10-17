@@ -9,7 +9,7 @@ import lejos.utility.Delay;
 
 /**
  * Class which is used to calibrate colorsensors and check the colors.
- * @author JP
+ * @author JP & Miikka Oksanen
  *
  */
 
