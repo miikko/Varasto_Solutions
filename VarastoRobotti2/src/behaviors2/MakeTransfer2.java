@@ -3,7 +3,6 @@ package behaviors2;
 import actions2.ColorSensor2;
 import actions2.Lift2;
 import connection2.Connection2;
-import connection2.Orders;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.navigation.Waypoint;

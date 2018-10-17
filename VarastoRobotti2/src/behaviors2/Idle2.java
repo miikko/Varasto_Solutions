@@ -1,7 +1,6 @@
 package behaviors2;
 
 import connection2.Connection2;
-import connection2.Orders;
 import lejos.robotics.subsumption.Behavior;
 import navigation2.Navigation2;
 
@@ -12,18 +11,11 @@ import navigation2.Navigation2;
  */
 public class Idle2 implements Behavior{
 
-	private MakeTransfer2 mt2;
-	private Orders orders;
-	private Navigation2 navigation;
 	private volatile boolean suppressed;
 	
-	public Idle2(Orders orders) {
-		this.orders = orders;
+	public Idle2() {
 	}
 	
-	public Idle2() {
-		
-	}
 	
 	@Override
 	/**
