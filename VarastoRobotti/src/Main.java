@@ -9,6 +9,12 @@ import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import navigation.Navigation;
 
+/**
+ * This class creates various objects and behaviors.
+ * Finally it starts the program execution.
+ * @author 
+ *
+ */
 public class Main {
 	
 	public static void main(String[] args) {
