@@ -123,7 +123,7 @@ public class MenuCommunicationModel extends Thread {
 	 */
 	public void makeTransfer(Waypoint waypoint, int lockerNumber) {
 
-		transferInProgress = true;
+		transferInProgress = true; 
 		try {
 
 			waypoint.dumpObject(out);
